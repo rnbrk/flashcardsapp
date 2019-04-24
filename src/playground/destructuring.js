@@ -30,8 +30,18 @@
 // const [, city, state = 'Stateless'] = address;
 // console.log(`You are in ${city}, ${state}.`);
 
+// const item = ['coffee (iced)', '$2.00', '$2.50', '$2.75'];
+// const [itemName, , mediumPrice] = item;
 
-const item = ['coffee (iced)', '$2.00', '$2.50', '$2.75'];
-const [itemName, , mediumPrice] = item;
+// console.log(`A medium ${itemName} costs ${mediumPrice}`);
 
-console.log(`A medium ${itemName} costs ${mediumPrice}`);
+const randomNumberString = () => {
+  var str = '';
+  var randomNumber;
+
+  do {
+    randomNumber = Math.floor(Math.random() * 10);
+    str += randomNumber;
+  } while (randomNumber !== 8);
+  console.log(str);
+};

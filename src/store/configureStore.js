@@ -2,10 +2,17 @@ import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 
 import authReducer from '../reducers/auth';
+import cardsReducer from '../reducers/cards';
 
 export default () => {
   const reducer = combineReducers({
-    auth: authReducer
+    auth: authReducer,
+    cards: cardsReducer,
+    cardsDuePerDay: 20,
+    cardsVisibilityfilter: 'SHOW_ALL',
+    collectionName: 'Spanish words',
+    collections: ['Spanish words'],
+    id: 'id12345'
   });
 
   // Use compose if DEVTOOLS extension does not exist

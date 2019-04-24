@@ -2,3 +2,5 @@ node_modules/
 public/dist/
 .env.test
 .env.development
+schema.html
+dataStructure.js
