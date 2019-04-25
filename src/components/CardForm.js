@@ -1,11 +1,9 @@
 import React from 'react';
 
-import { connect } from 'react-redux';
 import moment from 'moment';
 import uuid from 'uuid';
 
 import ActionButton from './ActionButton';
-import { addCard } from '../actions/cards';
 
 class CardForm extends React.Component {
   state = {
@@ -38,16 +36,16 @@ class CardForm extends React.Component {
   };
 
   handleSubmit = event => {
-    const newCard = {
+    const card = {
       id: uuid(),
       dateAdded: moment()
         .utc()
-        .unix(),
+        .valueOf(),
       front: this.state.frontText,
       back: this.state.backText
     };
 
-    this.props.addCard(newCard);
+    this.props.handleSubmit(card);
 
     event.preventDefault();
   };
@@ -75,11 +73,4 @@ class CardForm extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  addCard: card => dispatch(addCard(card))
-});
-
-export default connect(
-  undefined,
-  mapDispatchToProps
-)(CardForm);
+export default CardForm;
