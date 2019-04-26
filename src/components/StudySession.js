@@ -54,8 +54,8 @@ class StudySession extends React.Component {
           <label>
             Front
             <textarea
-              value={this.props.cards[this.state.currentCardIndex].front}
-              name="frontText"
+              value={this.props.cards[this.state.currentCardIndex].textFront}
+              name="textFront"
               disabled
             />
           </label>
@@ -64,8 +64,8 @@ class StudySession extends React.Component {
             <label>
               Back
               <textarea
-                value={this.props.cards[this.state.currentCardIndex].back}
-                name="backText"
+                value={this.props.cards[this.state.currentCardIndex].textBack}
+                name="textBack"
                 disabled
               />
             </label>

@@ -42,8 +42,8 @@ class EditCard extends React.Component {
         <ScreenTitle title="Edit Card" subtitle={`Collections > ${collectionName}`} />
         {this.props.card ? (
           <CardForm
-            frontText={this.props.card.front}
-            backText={this.props.card.back}
+            textFront={this.props.card.textFront}
+            textBack={this.props.card.textBack}
             handleSubmit={this.updateCardInStore}
           />
         ) : (

@@ -2,26 +2,14 @@ import uuid from 'uuid';
 import moment from 'moment';
 
 const randomInt = () => Math.floor(Math.random() * 10);
-console.log(randomInt());
-
-const cardWithData = {
-  id: uuid(),
-  dateAdded: moment(),
-  dateModified: moment(),
-  dateLastStudied: moment(),
-  easinessFactor: 2.5,
-  intervalInDays: 5,
-  timesRepeated: 1,
-  textBack: 'Congratulations!',
-  textFront: '¡Felicidades!'
-};
-
-const updateEasinessFactor = (easinessFactor, grade) =>
-  easinessFactor + (0.1 - (5 - grade) * (0.08 + (5 - grade) * 0.02));
 
 const updateStudyProgress = (oldCard, grade) => {
   const card = { ...oldCard };
+
+  // Update interval and times card has repeated
   if (grade >= 3) {
+    card.timesRepeated += 1;
+
     if (card.timesRepeated === 0) {
       card.intervalInDays = 1;
     } else if (card.timesRepeated === 1) {
@@ -29,80 +17,183 @@ const updateStudyProgress = (oldCard, grade) => {
     } else {
       card.intervalInDays = Math.round(card.intervalInDays * card.easinessFactor);
     }
+  } else {
+    card.timesRepeated = 0;
+    card.intervalInDays = 1;
   }
-  card.timesRepeated += 1;
 
-  const newEasinessFactor = updateEasinessFactor(card.easinessFactor, grade);
+  // Update dates
+  card.dateLastStudied = moment();
+  card.dateNextStudy = moment().add(card.intervalInDays, 'days');
+
+  // Update card difficulty
+  const newEasinessFactor = card.easinessFactor + (0.1 - (5 - grade) * (0.08 + (5 - grade) * 0.02));
   card.easinessFactor = newEasinessFactor < 1.3 ? 1.3 : newEasinessFactor;
 
   return card;
 };
 
+// const updateEasinessFactor = (easinessFactor, grade) =>
+//   easinessFactor + (0.1 - (5 - grade) * (0.08 + (5 - grade) * 0.02));
+
+// const updateStudyProgress = (oldCard, grade) => {
+//   const card = { ...oldCard };
+
+//   if (grade >= 3) {
+//     if (card.timesRepeated === 0) {
+//       card.intervalInDays = 1;
+//     } else if (card.timesRepeated === 1) {
+//       card.intervalInDays = 6;
+//     } else {
+//       card.intervalInDays = Math.round(card.intervalInDays * card.easinessFactor);
+//     }
+//   }
+//   card.timesRepeated += 1;
+
+//   const newEasinessFactor = updateEasinessFactor(card.easinessFactor, grade);
+//   card.easinessFactor = newEasinessFactor < 1.3 ? 1.3 : newEasinessFactor;
+
+//   return card;
+// };
+
+// const cardWithData = {
+//   id: uuid(),
+//   dateAdded: moment().utc(),
+//   dateModified: moment().utc(),
+//   dateLastStudied: undefined,
+//   dateNextStudy: undefined,
+//   easinessFactor: 2.5,
+//   intervalInDays: 0,
+//   timesRepeated: 0,
+//   textBack: 'Congratulations!',
+//   textFront: '¡Felicidades!'
+// };
+
 const initialState = [
   {
     id: uuid(),
     dateAdded: moment()
+      .utc()
       .add(randomInt(), 'hours')
       .add(randomInt(), 'days')
       .valueOf(),
-
-    front: '¡Felicidades!',
-    back: 'Congratulations!'
+    dateModified: moment()
+      .utc()
+      .add(randomInt(), 'hours')
+      .add(randomInt(), 'days')
+      .valueOf(),
+    dateLastStudied: undefined,
+    dateNextStudy: undefined,
+    easinessFactor: 2.5,
+    intervalInDays: 0,
+    timesRepeated: 0,
+    textBack: '¡Felicidades!',
+    textFront: 'Congratulations!'
   },
 
   {
     id: uuid(),
     dateAdded: moment()
+      .utc()
       .add(randomInt(), 'hours')
       .add(randomInt(), 'days')
       .valueOf(),
-
-    front: 'Estudia.',
-    back: 'Study.'
+    dateModified: moment()
+      .utc()
+      .add(randomInt(), 'hours')
+      .add(randomInt(), 'days')
+      .valueOf(),
+    dateLastStudied: undefined,
+    dateNextStudy: undefined,
+    easinessFactor: 2.5,
+    intervalInDays: 0,
+    timesRepeated: 0,
+    textBack: 'Estudia.',
+    textFront: 'Study.'
   },
 
   {
     id: uuid(),
     dateAdded: moment()
+      .utc()
       .add(randomInt(), 'hours')
       .add(randomInt(), 'days')
       .valueOf(),
-
-    front: 'Bienvenida.',
-    back: 'Welcome.'
+    dateModified: moment()
+      .utc()
+      .add(randomInt(), 'hours')
+      .add(randomInt(), 'days')
+      .valueOf(),
+    dateLastStudied: undefined,
+    dateNextStudy: undefined,
+    easinessFactor: 2.5,
+    intervalInDays: 0,
+    timesRepeated: 0,
+    textBack: 'Bienvenida.',
+    textFront: 'Welcome.'
   },
 
   {
     id: uuid(),
     dateAdded: moment()
+      .utc()
       .add(randomInt(), 'hours')
       .add(randomInt(), 'days')
       .valueOf(),
-
-    front: 'Llueve.',
-    back: 'It is raining.'
+    dateModified: moment()
+      .utc()
+      .add(randomInt(), 'hours')
+      .add(randomInt(), 'days')
+      .valueOf(),
+    dateLastStudied: undefined,
+    dateNextStudy: undefined,
+    easinessFactor: 2.5,
+    intervalInDays: 0,
+    timesRepeated: 0,
+    textBack: 'Llueve.',
+    textFront: 'It is raining.'
   },
 
   {
     id: uuid(),
     dateAdded: moment()
+      .utc()
       .add(randomInt(), 'hours')
       .add(randomInt(), 'days')
       .valueOf(),
-
-    front: 'Sígueme.',
-    back: 'Follow me.'
+    dateModified: moment()
+      .utc()
+      .add(randomInt(), 'hours')
+      .add(randomInt(), 'days')
+      .valueOf(),
+    dateLastStudied: undefined,
+    dateNextStudy: undefined,
+    easinessFactor: 2.5,
+    intervalInDays: 0,
+    timesRepeated: 0,
+    textBack: 'Sígueme.',
+    textFront: 'Follow me.'
   },
 
   {
     id: uuid(),
     dateAdded: moment()
+      .utc()
       .add(randomInt(), 'hours')
       .add(randomInt(), 'days')
       .valueOf(),
-
-    front: 'Disculpe.',
-    back: 'Sorry.'
+    dateModified: moment()
+      .utc()
+      .add(randomInt(), 'hours')
+      .add(randomInt(), 'days')
+      .valueOf(),
+    dateLastStudied: undefined,
+    dateNextStudy: undefined,
+    easinessFactor: 2.5,
+    intervalInDays: 0,
+    timesRepeated: 0,
+    textBack: 'Disculpe.',
+    textFront: 'Sorry.'
   }
 ];
 

@@ -7,16 +7,16 @@ import ActionButton from './ActionButton';
 
 class CardForm extends React.Component {
   state = {
-    frontText: '',
-    backText: ''
+    textFront: '',
+    textBack: ''
   };
 
   componentDidMount() {
-    const { frontText, backText } = this.props;
+    const { textFront, textBack } = this.props;
 
     this.setState(() => ({
-      frontText,
-      backText
+      textFront,
+      textBack
     }));
   }
 
@@ -24,13 +24,13 @@ class CardForm extends React.Component {
     const elementName = event.target.name;
     const elementValue = event.target.value;
 
-    if (elementName === 'frontText') {
+    if (elementName === 'textFront') {
       this.setState(() => ({
-        frontText: elementValue
+        textFront: elementValue
       }));
-    } else if (elementName === 'backText') {
+    } else if (elementName === 'textBack') {
       this.setState(() => ({
-        backText: elementValue
+        textBack: elementValue
       }));
     }
   };
@@ -41,8 +41,8 @@ class CardForm extends React.Component {
       dateAdded: moment()
         .utc()
         .valueOf(),
-      front: this.state.frontText,
-      back: this.state.backText
+      textFront: this.state.textFront,
+      textBack: this.state.textBack
     };
 
     this.props.handleSubmit(card);
@@ -51,18 +51,18 @@ class CardForm extends React.Component {
   };
 
   render() {
-    const { frontText, backText } = this.state;
+    const { textFront, textBack } = this.state;
 
     return (
       <form onSubmit={this.handlesubmit}>
         <label>
           Front
-          <textarea value={frontText} onChange={this.handleChange} name="frontText" />
+          <textarea value={textFront} onChange={this.handleChange} name="textFront" />
         </label>
 
         <label>
           Back
-          <textarea value={backText} onChange={this.handleChange} name="backText" />
+          <textarea value={textBack} onChange={this.handleChange} name="textBack" />
         </label>
 
         <ActionButton handleActionButtonPress={this.handleSubmit} />

@@ -5,8 +5,6 @@ import CardItemList from './CardItemList';
 import ScreenTitle from './ScreenTitle';
 
 export default class EditCollection extends React.Component {
-  state = {};
-
   cardsDuePerDay = 20;
   collectionName = 'Spanish words';
   id = 'id12345';

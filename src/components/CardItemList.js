@@ -12,8 +12,8 @@ const CardItemList = ({ cards }) => {
         <CardItem
           key={uuid()}
           id={card.id}
-          front={card.front}
-          back={card.back}
+          textFront={card.textFront}
+          textBack={card.textBack}
           dateAdded={card.dateAdded}
         />
       ))}
