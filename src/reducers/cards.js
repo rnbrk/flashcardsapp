@@ -4,6 +4,40 @@ import moment from 'moment';
 const randomInt = () => Math.floor(Math.random() * 10);
 console.log(randomInt());
 
+const cardWithData = {
+  id: uuid(),
+  dateAdded: moment(),
+  dateModified: moment(),
+  dateLastStudied: moment(),
+  easinessFactor: 2.5,
+  intervalInDays: 5,
+  timesRepeated: 1,
+  textBack: 'Congratulations!',
+  textFront: '¡Felicidades!'
+};
+
+const updateEasinessFactor = (easinessFactor, grade) =>
+  easinessFactor + (0.1 - (5 - grade) * (0.08 + (5 - grade) * 0.02));
+
+const updateStudyProgress = (oldCard, grade) => {
+  const card = { ...oldCard };
+  if (grade >= 3) {
+    if (card.timesRepeated === 0) {
+      card.intervalInDays = 1;
+    } else if (card.timesRepeated === 1) {
+      card.intervalInDays = 6;
+    } else {
+      card.intervalInDays = Math.round(card.intervalInDays * card.easinessFactor);
+    }
+  }
+  card.timesRepeated += 1;
+
+  const newEasinessFactor = updateEasinessFactor(card.easinessFactor, grade);
+  card.easinessFactor = newEasinessFactor < 1.3 ? 1.3 : newEasinessFactor;
+
+  return card;
+};
+
 const initialState = [
   {
     id: uuid(),
@@ -89,6 +123,15 @@ const cardsReducer = (state = initialState, action) => {
 
     case 'REMOVE_CARD':
       return state.filter(card => card.id !== action.id);
+
+    case 'ANSWER_CARD':
+      return state.map(card =>
+        card.id === action.id
+          ? {
+              ...updateStudyProgress(card, action.grade)
+            }
+          : card
+      );
 
     default:
       return state;

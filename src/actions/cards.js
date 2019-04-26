@@ -13,3 +13,9 @@ export const removeCard = id => ({
   type: 'REMOVE_CARD',
   id
 });
+
+export const answerCard = (id, grade) => ({
+  type: 'ANSWER_CARD',
+  id,
+  grade
+});

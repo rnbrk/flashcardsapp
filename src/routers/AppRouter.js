@@ -5,6 +5,7 @@ import AddCard from '../components/AddCard';
 import EditCard from '../components/EditCard';
 import EditCollection from '../components/EditCollection';
 import NotFoundPage from '../components/NotFoundPage';
+import StudySession from '../components/StudySession';
 import UserStatus from '../components/UserStatus';
 
 // import createHistory from 'history/createBrowserHistory';
@@ -17,6 +18,7 @@ const AppRouter = () => (
       <Route path="/" component={EditCollection} exact />
       <Route path="/add" render={() => <AddCard collectionName="Spanish words" exact />} />
       <Route path="/edit:id" component={EditCard} />
+      <Route path="/study" component={StudySession} />
       <Route component={NotFoundPage} />
     </Switch>
   </BrowserRouter>
