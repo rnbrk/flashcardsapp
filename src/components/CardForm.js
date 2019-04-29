@@ -7,14 +7,18 @@ import ActionButton from './ActionButton';
 
 class CardForm extends React.Component {
   state = {
+    collectionId: '',
+    collectionName: '',
     textFront: '',
     textBack: ''
   };
 
   componentDidMount() {
-    const { textFront, textBack } = this.props;
+    const { collectionId, collectionName, textFront, textBack } = this.props;
 
     this.setState(() => ({
+      collectionId,
+      collectionName,
       textFront,
       textBack
     }));
@@ -37,12 +41,22 @@ class CardForm extends React.Component {
 
   handleSubmit = event => {
     const card = {
-      id: uuid(),
+      collectionId: this.state.collectionId,
+      collectionName: this.state.collectionName,
       dateAdded: moment()
-        .utc()
+        .startOf('day')
         .valueOf(),
+      dateLastStudied: null,
+      dateModified: moment()
+        .startOf('day')
+        .valueOf(),
+      dateNextStudy: null,
+      easinessFactor: 2.5,
+      id: uuid(),
+      intervalInDays: 0,
+      textBack: this.state.textBack,
       textFront: this.state.textFront,
-      textBack: this.state.textBack
+      timesRepeated: 0
     };
 
     this.props.handleSubmit(card);

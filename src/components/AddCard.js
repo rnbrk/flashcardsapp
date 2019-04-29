@@ -28,7 +28,13 @@ class AddCard extends React.Component {
     return (
       <div>
         <ScreenTitle title="Add Card" subtitle={`Collections > ${collectionName}`} />
-        <CardForm frontText="" backText="" handleSubmit={this.addCardToStore} />
+        <CardForm
+          textBack=""
+          textFront=""
+          collectionId="collection1"
+          collectionName={collectionName}
+          handleSubmit={this.addCardToStore}
+        />
       </div>
     );
   }

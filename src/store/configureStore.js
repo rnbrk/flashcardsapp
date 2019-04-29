@@ -24,3 +24,33 @@ export default () => {
   const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
   return store;
 };
+
+// const dataStructure = {
+//   auth: authReducer,
+//   cards: {
+//     collectionId: {
+//       collection: [{}, {}, {}],
+//       studySession: {
+//         cardQueue: ['id1', 'id2', 'id3'],
+//         currentCardToStudy: 2,
+//         collection: 'collection1'
+//       }
+//     }
+//   }
+// };
+
+const dataStructure2 = {
+  auth: authReducer,
+  cards: [{ collection: 'collection1' }, { collection: 'collection2' }],
+  collections: [
+    {
+      id: 'collection1',
+      cardsToStudyPerDay: 20,
+      cardsToStudyToday: 15,
+      cardsStudiedToday: 5,
+      indexOfCardToStudy: 2,
+      name: 'Spanish words',
+      studyQueue: ['id1', 'id2', 'id3']
+    }
+  ]
+};

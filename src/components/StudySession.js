@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 
-import ScreenTitle from './ScreenTitle';
 import ActionButton from '../components/ActionButton';
+import { answerCard } from '../actions/cards';
+import { getCardsForStudy } from '../selectors/study';
+import ScreenTitle from './ScreenTitle';
 
 class StudySession extends React.Component {
   state = {
@@ -19,6 +20,7 @@ class StudySession extends React.Component {
   };
 
   onHandleCorrect = () => {
+    this.props.answerCard(this.props.cards[this.state.currentCardIndex].id, 4);
     this.setState(() => ({
       userHasReadFrontOfCard: false,
       currentCardIndex: this.state.currentCardIndex + 1
@@ -26,6 +28,7 @@ class StudySession extends React.Component {
   };
 
   onHandleFalse = () => {
+    this.props.answerCard(this.props.cards[this.state.currentCardIndex].id, 2);
     this.setState(() => ({
       userHasReadFrontOfCard: false,
       currentCardIndex: this.state.currentCardIndex + 1
@@ -33,11 +36,19 @@ class StudySession extends React.Component {
   };
 
   render() {
-    console.log(this.props.match);
+    console.log(this.props.cards);
 
     const { collectionName } = this.props;
-
     const percentageComplete = (this.state.currentCardIndex / this.props.cards.length) * 100;
+
+    if (this.state.currentCardIndex >= this.props.cards.length) {
+      return (
+        <div>
+          <ScreenTitle title="Study" subtitle={`Collections > ${collectionName}`} />
+          <div>Done!</div>
+        </div>
+      );
+    }
 
     return (
       <div>
@@ -92,14 +103,14 @@ class StudySession extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  cards: state.cards
+  cards: getCardsForStudy(state.cards, 20)
 });
 
-// const mapDispatchToProps = dispatch => ({
-//   editCard: (id, updates) => dispatch(editCard(id, updates)),
-//   removeCard: id => dispatch(removeCard(id))
-// });
+const mapDispatchToProps = dispatch => ({
+  answerCard: (id, grade) => dispatch(answerCard(id, grade))
+});
 
-export default connect(mapStateToProps)(StudySession);
-// mapStateToProps,
-// mapDispatchToProps
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(StudySession);
