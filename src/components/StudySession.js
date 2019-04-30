@@ -29,7 +29,7 @@ class StudySession extends React.Component {
     this.props.answerCard(this.props.currentCard.id, grade);
     this.props.incrementCardsStudied(this.props.match.params.collectionId);
 
-    // Handles again option
+    // Just for the again option:
     if (grade === 1) {
       this.props.repeatCard(this.props.currentCard.id, this.props.match.params.collectionId);
     }
@@ -44,7 +44,10 @@ class StudySession extends React.Component {
     const percentageComplete =
       (this.props.indexOfCurrentCard / this.props.cardsToStudyToday.length) * 100;
 
-    if (this.props.indexOfCurrentCard >= this.props.cardsToStudyToday.length) {
+    if (
+      this.props.cardsToStudyToday.length > 0 &&
+      this.props.indexOfCurrentCard >= this.props.cardsToStudyToday.length
+    ) {
       return (
         <div>
           <ScreenTitle title="Study" subtitle={`Collections > ${collectionName}`} />
@@ -118,19 +121,26 @@ class StudySession extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  cardsToStudyToday: state.collections.cardsToStudyToday,
-  indexOfCurrentCard: state.collections.indexOfCurrentCard,
-  currentCard: state.cards.find(
-    card => card.id === state.collections.cardsToStudyToday[state.collections.indexOfCurrentCard]
-  )
-});
+const mapStateToProps = (state, props) => {
+  const collectionId = props.match.params.collectionId;
+  const cardsToStudyToday = state.collections[collectionId].cardsToStudyToday;
+  const indexOfCurrentCard = state.collections[collectionId].indexOfCurrentCard;
+  const currentCard = state.cards.find(card => card.id === cardsToStudyToday[indexOfCurrentCard]);
+
+  console.log('indexOfCurrentCard', indexOfCurrentCard);
+
+  return {
+    cardsToStudyToday,
+    indexOfCurrentCard,
+    currentCard
+  };
+};
 
 const mapDispatchToProps = dispatch => ({
   answerCard: (cardId, grade) => dispatch(answerCard(cardId, grade)),
   getCardsToStudy: collectionId => dispatch(getCardsToStudy(collectionId)),
   incrementCardsStudied: collectionId => dispatch(incrementCardsStudied(collectionId)),
-  repeatCard: cardId => dispatch(repeatCard(cardId))
+  repeatCard: (cardId, collectionId) => dispatch(repeatCard(cardId, collectionId))
 });
 
 export default connect(
