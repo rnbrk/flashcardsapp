@@ -1,8 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import { Redirect } from 'react-router-dom';
+import uuid from 'uuid';
 
-import { addCard } from '../actions/cards';
+import { startAddCard } from '../actions/cards';
 import CardForm from './CardForm';
 import ScreenTitle from './ScreenTitle';
 
@@ -11,8 +13,27 @@ class AddCard extends React.Component {
     userJustPressedSubmit: false
   };
 
-  addCardToStore = card => {
-    this.props.addCard(card);
+  addCardToStore = (textFront, textBack) => {
+    const card = {
+      collectionId: 'collection1',
+      collectionName: 'Spanish words',
+      dateAdded: moment()
+        .startOf('day')
+        .valueOf(),
+      dateLastStudied: null,
+      dateModified: moment()
+        .startOf('day')
+        .valueOf(),
+      dateNextStudy: null,
+      easinessFactor: 2.5,
+      // id: uuid(),
+      intervalInDays: 0,
+      textBack,
+      textFront,
+      timesRepeated: 0
+    };
+
+    this.props.startAddCard(card);
     this.setState(() => ({
       userJustPressedSubmit: true
     }));
@@ -41,7 +62,7 @@ class AddCard extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  addCard: card => dispatch(addCard(card))
+  startAddCard: card => dispatch(startAddCard(card))
 });
 
 export default connect(

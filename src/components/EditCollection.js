@@ -1,13 +1,19 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import ActionButton from './ActionButton';
 import CardItemList from './CardItemList';
 import ScreenTitle from './ScreenTitle';
+import { startSetCards } from '../actions/cards';
 
-export default class EditCollection extends React.Component {
+class EditCollection extends React.Component {
   cardsDuePerDay = 20;
   collectionName = 'Spanish words';
-  id = 'id12345';
+  collectionId = 'collection1';
+
+  componentDidMount() {
+    this.props.startSetCards(this.collectionId);
+  }
 
   handleAddCardButton = () => {
     this.props.history.push('/add');
@@ -24,3 +30,14 @@ export default class EditCollection extends React.Component {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => ({
+  startSetCards: collectionId => {
+    dispatch(startSetCards(collectionId));
+  }
+});
+
+export default connect(
+  undefined,
+  mapDispatchToProps
+)(EditCollection);

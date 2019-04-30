@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import { Redirect } from 'react-router-dom';
 
 import { editCard, removeCard } from '../actions/cards';
@@ -23,7 +24,15 @@ class EditCard extends React.Component {
     this.onHandleSubmit();
   };
 
-  updateCardInStore = card => {
+  updateCardInStore = (textFront, textBack) => {
+    const card = {
+      dateModified: moment()
+        .startOf('day')
+        .valueOf(),
+      textBack,
+      textFront
+    };
+
     this.props.editCard(this.props.match.params.id, card);
     this.onHandleSubmit();
   };

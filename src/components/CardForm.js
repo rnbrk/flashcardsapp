@@ -1,8 +1,5 @@
 import React from 'react';
 
-import moment from 'moment';
-import uuid from 'uuid';
-
 import ActionButton from './ActionButton';
 
 class CardForm extends React.Component {
@@ -40,27 +37,7 @@ class CardForm extends React.Component {
   };
 
   handleSubmit = event => {
-    const card = {
-      collectionId: this.state.collectionId,
-      collectionName: this.state.collectionName,
-      dateAdded: moment()
-        .startOf('day')
-        .valueOf(),
-      dateLastStudied: null,
-      dateModified: moment()
-        .startOf('day')
-        .valueOf(),
-      dateNextStudy: null,
-      easinessFactor: 2.5,
-      id: uuid(),
-      intervalInDays: 0,
-      textBack: this.state.textBack,
-      textFront: this.state.textFront,
-      timesRepeated: 0
-    };
-
-    this.props.handleSubmit(card);
-
+    this.props.handleSubmit(this.state.textFront, this.state.textBack);
     event.preventDefault();
   };
 

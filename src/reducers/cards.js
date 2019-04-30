@@ -1,7 +1,6 @@
-import initialState from '../sampledata/cards';
 import updateStudyProgress from '../supermemo2/updateStudyProgress';
 
-const cardsReducer = (state = initialState, action) => {
+const cardsReducer = (state = [], action) => {
   switch (action.type) {
     case 'ADD_CARD':
       return [...state, action.card];
@@ -27,6 +26,9 @@ const cardsReducer = (state = initialState, action) => {
             }
           : card
       );
+
+    case 'SET_CARDS':
+      return [...action.cards];
 
     default:
       return state;
