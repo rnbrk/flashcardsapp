@@ -3,17 +3,20 @@ import thunk from 'redux-thunk';
 
 import authReducer from '../reducers/auth';
 import cardsReducer from '../reducers/cards';
+import collectionsReducer from '../reducers/collections';
+import { getCardsFromCollectionId } from '../selectors/study';
 
 export default () => {
-  const reducer = combineReducers({
-    auth: authReducer,
-    cards: cardsReducer,
-    cardsDuePerDay: 20,
-    cardsVisibilityfilter: 'SHOW_ALL',
-    collectionName: 'Spanish words',
-    collections: ['Spanish words'],
-    id: 'id12345'
-  });
+  const reducer = (state = {}, action) => {
+    return {
+      auth: authReducer(state.auth, action),
+      cards: cardsReducer(state.cards, action),
+      collections: collectionsReducer(state.collections, {
+        ...action,
+        cards: state.cards
+      })
+    };
+  };
 
   // Use compose if DEVTOOLS extension does not exist
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -25,32 +28,19 @@ export default () => {
   return store;
 };
 
-// const dataStructure = {
-//   auth: authReducer,
-//   cards: {
-//     collectionId: {
-//       collection: [{}, {}, {}],
-//       studySession: {
-//         cardQueue: ['id1', 'id2', 'id3'],
-//         currentCardToStudy: 2,
-//         collection: 'collection1'
-//       }
-//     }
-//   }
-// };
-
-const dataStructure2 = {
+const dataStructure = {
   auth: authReducer,
   cards: [{ collection: 'collection1' }, { collection: 'collection2' }],
   collections: [
     {
       id: 'collection1',
       cardsToStudyPerDay: 20,
-      cardsToStudyToday: 15,
-      cardsStudiedToday: 5,
-      indexOfCardToStudy: 2,
+      cardsToStudyToday: undefined,
+      cardsStudiedToday: undefined,
+      indexOfCardToStudy: undefined,
       name: 'Spanish words',
-      studyQueue: ['id1', 'id2', 'id3']
+      studyQueue: undefined,
+      visibilityfilter: 'SHOW_ALL'
     }
   ]
 };

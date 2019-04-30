@@ -18,7 +18,7 @@ const AppRouter = () => (
       <Route path="/" component={EditCollection} exact />
       <Route path="/add" render={() => <AddCard collectionName="Spanish words" exact />} />
       <Route path="/edit:id" component={EditCard} />
-      <Route path="/study" component={StudySession} />
+      <Route path="/study:collectionId" component={StudySession} />
       <Route component={NotFoundPage} />
     </Switch>
   </BrowserRouter>

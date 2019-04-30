@@ -6,7 +6,7 @@ const ScreenTitle = ({ title, subtitle }) => (
     <h1>{title}</h1>
     <h2>{subtitle}</h2>
     <Link to="/">Home</Link>
-    <Link to="/study">Study</Link>
+    <Link to="/studycollection1">Study</Link>
   </div>
 );
 
