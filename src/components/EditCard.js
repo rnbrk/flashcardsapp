@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom';
 
-import { editCard, removeCard } from '../actions/cards';
+import { startEditCard, startRemoveCard } from '../actions/cards';
 import CardForm from './CardForm';
 import ScreenTitle from './ScreenTitle';
 
@@ -20,7 +20,7 @@ class EditCard extends React.Component {
   };
 
   onHandleRemoveCard = () => {
-    this.props.removeCard(this.props.match.params.id);
+    this.props.startRemoveCard(this.props.match.params.cardId);
     this.onHandleSubmit();
   };
 
@@ -33,28 +33,26 @@ class EditCard extends React.Component {
       textFront
     };
 
-    this.props.editCard(this.props.match.params.id, card);
+    this.props.startEditCard(this.props.match.params.cardId, card);
     this.onHandleSubmit();
   };
 
   render() {
-    console.log(this.props.match);
-
-    const { collectionName } = this.props;
-
     if (this.state.userJustPressedSubmit) {
-      return <Redirect to="/" />;
+      return <Redirect to={`/collection/${this.props.card.collectionId}`} />;
     }
 
     return (
       <div>
-        <ScreenTitle title="Edit Card" subtitle={`Collections > ${collectionName}`} />
         {this.props.card ? (
-          <CardForm
-            textFront={this.props.card.textFront}
-            textBack={this.props.card.textBack}
-            handleSubmit={this.updateCardInStore}
-          />
+          <div>
+            <ScreenTitle title="Edit Card" subtitle={this.props.card.collectionName} />
+            <CardForm
+              textFront={this.props.card.textFront}
+              textBack={this.props.card.textBack}
+              handleSubmit={this.updateCardInStore}
+            />
+          </div>
         ) : (
           <p>Loading...</p>
         )}
@@ -65,12 +63,12 @@ class EditCard extends React.Component {
 }
 
 const mapStateToProps = (state, props) => ({
-  card: state.cards.find(card => card.id === props.match.params.id)
+  card: state.cards.find(card => card.id === props.match.params.cardId)
 });
 
 const mapDispatchToProps = dispatch => ({
-  editCard: (id, updates) => dispatch(editCard(id, updates)),
-  removeCard: id => dispatch(removeCard(id))
+  startEditCard: (cardId, updates) => dispatch(startEditCard(cardId, updates)),
+  startRemoveCard: cardId => dispatch(startRemoveCard(cardId))
 });
 
 export default connect(

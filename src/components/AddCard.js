@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom';
-import uuid from 'uuid';
 
 import { startAddCard } from '../actions/cards';
 import CardForm from './CardForm';
@@ -15,8 +14,8 @@ class AddCard extends React.Component {
 
   addCardToStore = (textFront, textBack) => {
     const card = {
-      collectionId: 'collection1',
-      collectionName: 'Spanish words',
+      collectionId: this.props.collectionId,
+      collectionName: this.props.collectionName,
       dateAdded: moment()
         .startOf('day')
         .valueOf(),
@@ -26,7 +25,6 @@ class AddCard extends React.Component {
         .valueOf(),
       dateNextStudy: null,
       easinessFactor: 2.5,
-      // id: uuid(),
       intervalInDays: 0,
       textBack,
       textFront,
@@ -40,19 +38,20 @@ class AddCard extends React.Component {
   };
 
   render() {
-    const { collectionName } = this.props;
+    console.log('this.props.history', this.props.history);
+    const { collectionId, collectionName } = this.props;
 
     if (this.state.userJustPressedSubmit) {
-      return <Redirect to="/" />;
+      return <Redirect to={`/collection/${collectionId}`} />;
     }
 
     return (
       <div>
-        <ScreenTitle title="Add Card" subtitle={`Collections > ${collectionName}`} />
+        <ScreenTitle title="Add Card" subtitle={collectionName} />
         <CardForm
           textBack=""
           textFront=""
-          collectionId="collection1"
+          collectionId={collectionId}
           collectionName={collectionName}
           handleSubmit={this.addCardToStore}
         />
@@ -61,11 +60,20 @@ class AddCard extends React.Component {
   }
 }
 
+const mapStateToProps = ({ collections }, props) => {
+  console.log('AddCard props', props);
+
+  return {
+    collectionId: props.match.params.collectionId,
+    collectionName: collections[props.match.params.collectionId].name
+  };
+};
+
 const mapDispatchToProps = dispatch => ({
   startAddCard: card => dispatch(startAddCard(card))
 });
 
 export default connect(
-  undefined,
+  mapStateToProps,
   mapDispatchToProps
 )(AddCard);

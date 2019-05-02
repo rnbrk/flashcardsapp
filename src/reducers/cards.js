@@ -1,5 +1,3 @@
-import updateStudyProgress from '../supermemo2/updateStudyProgress';
-
 const cardsReducer = (state = [], action) => {
   switch (action.type) {
     case 'ADD_CARD':
@@ -22,7 +20,8 @@ const cardsReducer = (state = [], action) => {
       return state.map(card =>
         card.id === action.id
           ? {
-              ...updateStudyProgress(card, action.grade)
+              ...card,
+              ...action.updates
             }
           : card
       );

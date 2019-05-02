@@ -1,16 +1,13 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import uuid from 'uuid';
 
 import CardItem from './CardItem';
 
 const CardItemList = ({ cards }) => {
-  console.log(cards);
   return (
     <div>
       {cards.map(card => (
         <CardItem
-          key={uuid()}
+          key={card.id}
           id={card.id}
           textFront={card.textFront}
           textBack={card.textBack}
@@ -21,8 +18,4 @@ const CardItemList = ({ cards }) => {
   );
 };
 
-const mapStateToProps = ({ cards }) => ({
-  cards
-});
-
-export default connect(mapStateToProps)(CardItemList);
+export default CardItemList;

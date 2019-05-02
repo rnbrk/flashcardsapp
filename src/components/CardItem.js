@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const CardItem = ({ id, dateAdded, textFront, textBack }) => {
   return (
-    <Link to={`/edit${id}`}>
+    <Link to={`/card/${id}`}>
       <div className="card-container" id={id} role="button" tabIndex="0">
         <div>Added: {moment(dateAdded).format('DD MMM YYYY hh:mm')}</div>
         <div>

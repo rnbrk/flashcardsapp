@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import ActionButton from '../components/ActionButton';
-import { answerCard } from '../actions/cards';
+import { startAnswerCard } from '../actions/cards';
 import { getCardsToStudy, incrementCardsStudied, repeatCard } from '../actions/collections';
 import ScreenTitle from './ScreenTitle';
 
@@ -13,7 +13,7 @@ class StudySession extends React.Component {
 
   componentDidMount() {
     if (this.props.cardsToStudyToday.length === 0) {
-      this.props.getCardsToStudy(this.props.match.params.collectionId);
+      this.props.getCardsToStudy(this.props.collectionId);
     }
   }
 
@@ -26,12 +26,12 @@ class StudySession extends React.Component {
   onHandleAnswer = event => {
     // Handles both correct and false answers
     const grade = Number(event.target.getAttribute('grade'));
-    this.props.answerCard(this.props.currentCard.id, grade);
-    this.props.incrementCardsStudied(this.props.match.params.collectionId);
+    this.props.startAnswerCard(this.props.currentCard, grade);
+    this.props.incrementCardsStudied(this.props.collectionId);
 
     // Just for the again option:
     if (grade === 1) {
-      this.props.repeatCard(this.props.currentCard.id, this.props.match.params.collectionId);
+      this.props.repeatCard(this.props.currentCard.id, this.props.collectionId);
     }
 
     this.setState(() => ({
@@ -40,7 +40,6 @@ class StudySession extends React.Component {
   };
 
   render() {
-    const { collectionName } = this.props;
     const percentageComplete =
       (this.props.indexOfCurrentCard / this.props.cardsToStudyToday.length) * 100;
 
@@ -50,7 +49,7 @@ class StudySession extends React.Component {
     ) {
       return (
         <div>
-          <ScreenTitle title="Study" subtitle={`Collections > ${collectionName}`} />
+          <ScreenTitle title="Study" subtitle={`Collections > ${this.props.collectionName}`} />
           <div>Done!</div>
         </div>
       );
@@ -59,7 +58,7 @@ class StudySession extends React.Component {
     if (this.props.currentCard) {
       return (
         <div>
-          <ScreenTitle title="Study" subtitle={`Collections > ${collectionName}`} />
+          <ScreenTitle title="Study" subtitle={this.props.collectionName} />
 
           <div
             className="progress"
@@ -114,7 +113,7 @@ class StudySession extends React.Component {
 
     return (
       <div>
-        <ScreenTitle title="Study" subtitle={`Collections > ${collectionName}`} />
+        <ScreenTitle title="Study" subtitle={this.props.collectionName} />
         <div>Loading</div>
       </div>
     );
@@ -123,6 +122,7 @@ class StudySession extends React.Component {
 
 const mapStateToProps = (state, props) => {
   const collectionId = props.match.params.collectionId;
+  const collectionName = state.collections[collectionId].name;
   const cardsToStudyToday = state.collections[collectionId].cardsToStudyToday;
   const indexOfCurrentCard = state.collections[collectionId].indexOfCurrentCard;
   const currentCard = state.cards.find(card => card.id === cardsToStudyToday[indexOfCurrentCard]);
@@ -130,14 +130,16 @@ const mapStateToProps = (state, props) => {
   console.log('indexOfCurrentCard', indexOfCurrentCard);
 
   return {
+    collectionId,
     cardsToStudyToday,
+    collectionName,
     indexOfCurrentCard,
     currentCard
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  answerCard: (cardId, grade) => dispatch(answerCard(cardId, grade)),
+  startAnswerCard: (card, grade) => dispatch(startAnswerCard(card, grade)),
   getCardsToStudy: collectionId => dispatch(getCardsToStudy(collectionId)),
   incrementCardsStudied: collectionId => dispatch(incrementCardsStudied(collectionId)),
   repeatCard: (cardId, collectionId) => dispatch(repeatCard(cardId, collectionId))

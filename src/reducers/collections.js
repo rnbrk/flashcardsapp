@@ -8,11 +8,41 @@ const initialState = {
     indexOfCurrentCard: 0,
     name: 'Spanish words',
     visibilityfilter: 'SHOW_ALL'
+  },
+
+  collection2: {
+    id: 'collection2',
+    dailyStudyLimit: 20,
+    cardsToStudyToday: [],
+    indexOfCurrentCard: 0,
+    name: 'US presidents',
+    visibilityfilter: 'SHOW_ALL'
+  },
+
+  collection3: {
+    id: 'collection3',
+    dailyStudyLimit: 20,
+    cardsToStudyToday: [],
+    indexOfCurrentCard: 0,
+    name: 'JavaScript questions',
+    visibilityfilter: 'SHOW_ALL'
   }
 };
 
-const collectionsReducer = (state = initialState, action) => {
+const collectionsReducer = (state = {}, action) => {
   switch (action.type) {
+    case 'ADD_COLLECTION':
+      return {
+        ...state,
+        [action.collectionId]: {
+          ...action.collection,
+          id: action.collectionId
+        }
+      };
+
+    case 'SET_COLLECTIONS':
+      return { ...action.collections };
+
     case 'GET_CARDS_TO_STUDY':
       return {
         ...state,
@@ -40,7 +70,7 @@ const collectionsReducer = (state = initialState, action) => {
           indexOfCurrentCard: state[action.collectionId].indexOfCurrentCard + 1
         }
       };
-    case 'CHANGE_DAILY_STUDY_LIMIT':
+    case 'SET_DAILY_STUDY_LIMIT':
       return {
         ...state,
         [action.collectionId]: {
