@@ -10,6 +10,9 @@ import configureStore from './store/configureStore';
 import EditCollection from './components/EditCollection';
 import UserStatus from './components/UserStatus';
 
+import { startSetCards } from './actions/cards';
+import { startSetCollections } from './actions/collections';
+
 import 'normalize.css/normalize.css';
 import './styles/styles.scss';
 
@@ -20,6 +23,20 @@ const jsx = (
     <AppRouter />
   </Provider>
 );
+
+store.dispatch(startSetCollections());
+
+// const monitorActiveCollection = () => {
+//   let activeCollection;
+//   return (dispatch, getState) => {
+//     if (activeCollection !== getState().activeCollection) {
+//       activeCollection = getState().activeCollection;
+//       store.dispatch(startSetCards(activeCollection));
+//     }
+//   };
+// };
+
+// store.subscribe(monitorActiveCollection());
 
 ReactDOM.render(jsx, document.querySelector('#app'));
 

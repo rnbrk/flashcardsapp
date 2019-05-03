@@ -1,6 +1,7 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 
+import appStateReducer from '../reducers/appState';
 import authReducer from '../reducers/auth';
 import cardsReducer from '../reducers/cards';
 import collectionsReducer from '../reducers/collections';
@@ -13,7 +14,8 @@ export default () => {
       collections: collectionsReducer(state.collections, {
         ...action,
         cards: state.cards
-      })
+      }),
+      appState: appStateReducer(state.appState, action)
     };
   };
 

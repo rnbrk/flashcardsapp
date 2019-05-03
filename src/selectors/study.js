@@ -4,11 +4,14 @@ const endOfToday = moment().endOf('day');
 const rangeRandomInt = (startRange, endRange) =>
   Math.floor(startRange + Math.random() * (endRange - startRange));
 
-const getIdsOfCardsToStudy = (cards, dailyLimit) =>
+const getIdsOfCardsToStudy = (cards, collectionId) =>
   cards
-    .filter(card => card.dateNextStudy === null || moment(card.dateNextStudy).isBefore(endOfToday))
+    .filter(
+      card =>
+        (card.dateNextStudy === null || moment(card.dateNextStudy).isBefore(endOfToday)) &&
+        card.collectionId === collectionId
+    )
     .map(card => card.id)
-    .slice(0, dailyLimit)
     .sort(() => rangeRandomInt(-1, 2));
 
 const getCardsFromCollectionId = (cards, collectionId) =>

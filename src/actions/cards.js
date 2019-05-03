@@ -1,5 +1,6 @@
 import database from '../firebase/firebase';
 import updateStudyProgress from '../supermemo2/updateStudyProgress';
+import { getCardsToStudy } from './collections';
 
 const uid = 'user1';
 
@@ -64,23 +65,22 @@ export const setCards = cards => ({
 
 export const startSetCards = collectionId => {
   return dispatch => {
-    return (
-      database
-        .ref(`users/${uid}/cards`)
-        // .orderByChild('collectionId')
-        // .equalTo(collectionId)
-        .once('value')
-        .then(snapshot => {
-          const cards = [];
-          snapshot.forEach(childNode => {
-            cards.push({
-              id: childNode.key,
-              ...childNode.val()
-            });
+    return database
+      .ref(`users/${uid}/cards`)
+      .orderByChild('collectionId')
+      .equalTo(collectionId)
+      .once('value')
+      .then(snapshot => {
+        const cards = [];
+        snapshot.forEach(childNode => {
+          cards.push({
+            id: childNode.key,
+            ...childNode.val()
           });
-          dispatch(setCards(cards));
-        })
-    );
+        });
+        dispatch(setCards(cards));
+        dispatch(getCardsToStudy(collectionId));
+      });
   };
 };
 

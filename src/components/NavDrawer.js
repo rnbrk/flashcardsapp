@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { startAddCollection, startsetCollections } from '../actions/collections';
+import { startAddCollection } from '../actions/collections';
 
 class NavDrawer extends React.Component {
   DEFAULT_INPUT_FIELD_VALUE = 'Name';
@@ -11,10 +11,6 @@ class NavDrawer extends React.Component {
     inputFieldValue: this.DEFAULT_INPUT_FIELD_VALUE,
     userClickedAddCollection: false
   };
-
-  componentDidMount() {
-    this.props.startsetCollections();
-  }
 
   handleSubmitAddCollection = event => {
     console.log('Clicked handleSubmitAddCollection');
@@ -47,52 +43,58 @@ class NavDrawer extends React.Component {
   };
 
   render() {
-    return (
-      <nav id="drawer">
-        <h2>
-          <Link to="/">Home</Link>
-        </h2>
-        <h2>Collections</h2>
-        <ul>
-          {this.props.collections.map(collection => (
-            <li key={collection.id}>
-              <Link to={`/collection/${collection.id}`} key={`link-${collection.id}`}>
-                {collection.name}
-              </Link>
-              <span> | </span>
-              <Link to={`/collection/${collection.id}/study`} key={`study-${collection.id}`}>
-                study
-              </Link>
-            </li>
-          ))}
+    if (this.props.collections) {
+      return (
+        <nav id="drawer">
+          <h2>
+            <Link to="/">Home</Link>
+          </h2>
+          <h2>Collections</h2>
+          <ul>
+            {this.props.collections.map(collection => (
+              <li key={collection.id}>
+                <Link to={`/collection/${collection.id}`} key={`link-${collection.id}`}>
+                  {collection.name}
+                </Link>
+                <span> | </span>
+                <Link to={`/collection/${collection.id}/study`} key={`study-${collection.id}`}>
+                  study
+                </Link>
+              </li>
+            ))}
 
-          {this.state.userClickedAddCollection ? (
-            <form onSubmit={this.handleSubmitAddCollection} onBlur={this.handleToggleAddCollection}>
-              <input
-                autoFocus
-                onChange={this.handleChangeInputAddCollection}
-                placeholder={this.state.inputFieldValue}
-                type="text"
-              />
-            </form>
-          ) : (
-            <button type="button" onClick={this.handleToggleAddCollection}>
-              Add collection
-            </button>
-          )}
-        </ul>
-      </nav>
-    );
+            {this.state.userClickedAddCollection ? (
+              <form
+                onSubmit={this.handleSubmitAddCollection}
+                onBlur={this.handleToggleAddCollection}
+              >
+                <input
+                  autoFocus
+                  onChange={this.handleChangeInputAddCollection}
+                  placeholder={this.state.inputFieldValue}
+                  type="text"
+                />
+              </form>
+            ) : (
+              <button type="button" onClick={this.handleToggleAddCollection}>
+                Add collection
+              </button>
+            )}
+          </ul>
+        </nav>
+      );
+    }
+
+    return <div>Loading</div>;
   }
 }
 
 const mapStateToProps = ({ collections }) => ({
-  collections: Object.values(collections)
+  collections
 });
 
 const mapDispatchToProps = dispatch => ({
-  startAddCollection: collection => dispatch(startAddCollection(collection)),
-  startsetCollections: () => dispatch(startsetCollections())
+  startAddCollection: collection => dispatch(startAddCollection(collection))
 });
 
 export default connect(

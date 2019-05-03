@@ -14,8 +14,8 @@ class AddCard extends React.Component {
 
   addCardToStore = (textFront, textBack) => {
     const card = {
-      collectionId: this.props.collectionId,
-      collectionName: this.props.collectionName,
+      collectionId: this.props.collection.id,
+      collectionName: this.props.collection.name,
       dateAdded: moment()
         .startOf('day')
         .valueOf(),
@@ -38,21 +38,18 @@ class AddCard extends React.Component {
   };
 
   render() {
-    console.log('this.props.history', this.props.history);
-    const { collectionId, collectionName } = this.props;
-
     if (this.state.userJustPressedSubmit) {
-      return <Redirect to={`/collection/${collectionId}`} />;
+      return <Redirect to={`/collection/${this.props.collection.id}`} />;
     }
 
     return (
       <div>
-        <ScreenTitle title="Add Card" subtitle={collectionName} />
+        <ScreenTitle title="Add Card" subtitle={this.props.collection.name} />
         <CardForm
           textBack=""
           textFront=""
-          collectionId={collectionId}
-          collectionName={collectionName}
+          collectionId={this.props.collection.id}
+          collectionName={this.props.collection.name}
           handleSubmit={this.addCardToStore}
         />
       </div>
@@ -60,12 +57,10 @@ class AddCard extends React.Component {
   }
 }
 
-const mapStateToProps = ({ collections }, props) => {
-  console.log('AddCard props', props);
-
+const mapStateToProps = (state, props) => {
   return {
     collectionId: props.match.params.collectionId,
-    collectionName: collections[props.match.params.collectionId].name
+    collection: state.collections.find(coll => coll.id === props.match.params.collectionId)
   };
 };
 

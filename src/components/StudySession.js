@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import ActionButton from '../components/ActionButton';
+import { updateCardsToActiveCollecton } from '../actions/appState';
 import { startAnswerCard } from '../actions/cards';
 import { getCardsToStudy, incrementCardsStudied, repeatCard } from '../actions/collections';
 import ScreenTitle from './ScreenTitle';
@@ -12,8 +13,16 @@ class StudySession extends React.Component {
   };
 
   componentDidMount() {
-    if (this.props.cardsToStudyToday.length === 0) {
-      this.props.getCardsToStudy(this.props.collectionId);
+    if (this.props.match.params.collectionId) {
+      this.props.updateCardsToActiveCollecton(this.props.match.params.collectionId);
+      this.props.getCardsToStudy(this.props.match.params.collectionId);
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.props.collectionId !== this.props.match.params.collectionId) {
+      this.props.updateCardsToActiveCollecton(this.props.match.params.collectionId);
+      this.props.getCardsToStudy(this.props.match.params.collectionId);
     }
   }
 
@@ -40,30 +49,32 @@ class StudySession extends React.Component {
   };
 
   render() {
-    const percentageComplete =
-      (this.props.indexOfCurrentCard / this.props.cardsToStudyToday.length) * 100;
-
-    if (
-      this.props.cardsToStudyToday.length > 0 &&
-      this.props.indexOfCurrentCard >= this.props.cardsToStudyToday.length
-    ) {
-      return (
-        <div>
-          <ScreenTitle title="Study" subtitle={`Collections > ${this.props.collectionName}`} />
-          <div>Done!</div>
-        </div>
-      );
-    }
-
     if (this.props.currentCard) {
+      const percentageComplete =
+        (this.props.collection.indexOfCurrentCard /
+          this.props.collection.cardsToStudyToday.length) *
+        100;
+
+      if (
+        this.props.collection.cardsToStudyToday.length > 0 &&
+        this.props.collection.indexOfCurrentCard >= this.props.collection.cardsToStudyToday.length
+      ) {
+        return (
+          <div>
+            <ScreenTitle title="Study" subtitle={`Collections > ${this.props.collection.name}`} />
+            <div>Done!</div>
+          </div>
+        );
+      }
+
       return (
         <div>
-          <ScreenTitle title="Study" subtitle={this.props.collectionName} />
+          <ScreenTitle title="Study" subtitle={this.props.collection.name} />
 
           <div
             className="progress"
-            data-label={`${this.props.indexOfCurrentCard} of ${
-              this.props.cardsToStudyToday.length
+            data-label={`${this.props.collection.indexOfCurrentCard} of ${
+              this.props.collection.cardsToStudyToday.length
             } complete`}
           >
             <span className="studied" style={{ width: `${percentageComplete}%` }} />
@@ -111,34 +122,30 @@ class StudySession extends React.Component {
       );
     }
 
-    return (
-      <div>
-        <ScreenTitle title="Study" subtitle={this.props.collectionName} />
-        <div>Loading</div>
-      </div>
-    );
+    return <div>Loading</div>;
   }
 }
 
-const mapStateToProps = (state, props) => {
-  const collectionId = props.match.params.collectionId;
-  const collectionName = state.collections[collectionId].name;
-  const cardsToStudyToday = state.collections[collectionId].cardsToStudyToday;
-  const indexOfCurrentCard = state.collections[collectionId].indexOfCurrentCard;
-  const currentCard = state.cards.find(card => card.id === cardsToStudyToday[indexOfCurrentCard]);
+const mapStateToProps = state => {
+  const collectionId = state.appState.activeCollection;
+  const collection = state.collections.find(coll => coll.id === collectionId);
+  const currentCard = state.cards.find(
+    card => card.id === collection.cardsToStudyToday[collection.indexOfCurrentCard]
+  );
 
-  console.log('indexOfCurrentCard', indexOfCurrentCard);
+  console.log('collection', collection);
+  console.log('currentCard', currentCard);
 
   return {
     collectionId,
-    cardsToStudyToday,
-    collectionName,
-    indexOfCurrentCard,
+    collection,
     currentCard
   };
 };
 
 const mapDispatchToProps = dispatch => ({
+  updateCardsToActiveCollecton: collectionId =>
+    dispatch(updateCardsToActiveCollecton(collectionId)),
   startAnswerCard: (card, grade) => dispatch(startAnswerCard(card, grade)),
   getCardsToStudy: collectionId => dispatch(getCardsToStudy(collectionId)),
   incrementCardsStudied: collectionId => dispatch(incrementCardsStudied(collectionId)),

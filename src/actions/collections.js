@@ -24,20 +24,39 @@ export const setCollections = collections => ({
   collections
 });
 
-export const startsetCollections = () => {
+export const startSetCollections = () => {
   return dispatch => {
     return database
       .ref(`users/${uid}/collections`)
       .once('value')
       .then(snapshot => {
-        const collections = snapshot.val();
-        Object.keys(collections).forEach(key => {
-          collections[key].id = key;
+        const collections = [];
+        snapshot.forEach(childNode => {
+          collections.push({
+            id: childNode.key,
+            cardsToStudyToday: [],
+            ...childNode.val()
+          });
         });
         dispatch(setCollections(collections));
       });
   };
 };
+
+// export const startSetCollections = () => {
+//   return dispatch => {
+//     return database
+//       .ref(`users/${uid}/collections`)
+//       .once('value')
+//       .then(snapshot => {
+//         const collections = snapshot.val();
+//         Object.keys(collections).forEach(key => {
+//           collections[key].id = key;
+//         });
+//         dispatch(setCollections(collections));
+//       });
+//   };
+// };
 
 export const getCardsToStudy = collectionId => ({
   type: 'GET_CARDS_TO_STUDY',
