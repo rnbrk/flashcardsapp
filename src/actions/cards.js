@@ -1,6 +1,5 @@
 import database from '../firebase/firebase';
 import updateStudyProgress from '../supermemo2/updateStudyProgress';
-import { getCardsToStudy } from './collections';
 
 const uid = 'user1';
 
@@ -79,7 +78,6 @@ export const startSetCards = collectionId => {
           });
         });
         dispatch(setCards(cards));
-        dispatch(getCardsToStudy(collectionId));
       });
   };
 };

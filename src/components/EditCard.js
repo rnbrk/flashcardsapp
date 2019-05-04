@@ -26,9 +26,7 @@ class EditCard extends React.Component {
 
   updateCardInStore = (textFront, textBack) => {
     const card = {
-      dateModified: moment()
-        .startOf('day')
-        .valueOf(),
+      dateModified: moment().valueOf(),
       textBack,
       textFront
     };

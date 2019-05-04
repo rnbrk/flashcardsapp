@@ -8,6 +8,8 @@ const updateStudyProgress = (card, grade) => {
   let timesRepeated;
 
   // Update interval and times card has repeated
+
+  // Correct answer
   if (grade >= 3) {
     if (card.timesRepeated === 0) {
       intervalInDays = 1;
@@ -18,17 +20,21 @@ const updateStudyProgress = (card, grade) => {
         Math.round(card.intervalInDays * card.easinessFactor) + rangeRandomInt(-2, 3);
     }
     timesRepeated = card.timesRepeated + 1;
-  } else {
+
+    // User answered wrongly
+  } else if (grade === 2) {
     timesRepeated = 0;
     intervalInDays = 1;
+
+    // User asks for card to repeat
+  } else {
+    timesRepeated = 0;
+    intervalInDays = 0;
   }
 
   // Update dates
-  const dateLastStudied = moment()
-    .startOf('day')
-    .valueOf();
+  const dateLastStudied = moment().valueOf();
   const dateNextStudy = moment()
-    .startOf('day')
     .add(intervalInDays, 'days')
     .valueOf();
 

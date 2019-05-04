@@ -2,9 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import ActionButton from '../components/ActionButton';
+
+import {
+  filterCardsDueToday,
+  filterCardsRepeatedToday,
+  filterCardsStudiedToday
+} from '../selectors/study';
+
 import { updateCardsToActiveCollecton } from '../actions/appState';
 import { startAnswerCard } from '../actions/cards';
-import { getCardsToStudy, incrementCardsStudied, repeatCard } from '../actions/collections';
+
 import ScreenTitle from './ScreenTitle';
 
 class StudySession extends React.Component {
@@ -15,14 +22,12 @@ class StudySession extends React.Component {
   componentDidMount() {
     if (this.props.match.params.collectionId) {
       this.props.updateCardsToActiveCollecton(this.props.match.params.collectionId);
-      this.props.getCardsToStudy(this.props.match.params.collectionId);
     }
   }
 
   componentDidUpdate() {
     if (this.props.collectionId !== this.props.match.params.collectionId) {
       this.props.updateCardsToActiveCollecton(this.props.match.params.collectionId);
-      this.props.getCardsToStudy(this.props.match.params.collectionId);
     }
   }
 
@@ -33,15 +38,8 @@ class StudySession extends React.Component {
   };
 
   onHandleAnswer = event => {
-    // Handles both correct and false answers
     const grade = Number(event.target.getAttribute('grade'));
     this.props.startAnswerCard(this.props.currentCard, grade);
-    this.props.incrementCardsStudied(this.props.collectionId);
-
-    // Just for the again option:
-    if (grade === 1) {
-      this.props.repeatCard(this.props.currentCard.id, this.props.collectionId);
-    }
 
     this.setState(() => ({
       userHasReadFrontOfCard: false
@@ -50,22 +48,13 @@ class StudySession extends React.Component {
 
   render() {
     if (this.props.currentCard) {
-      const percentageComplete =
-        (this.props.collection.indexOfCurrentCard /
-          this.props.collection.cardsToStudyToday.length) *
-        100;
+      const numCardsStudied = this.props.cardsStudiedToday.length;
+      const numCardsDue = this.props.cardsDueToday.length - this.props.cardsRepeatedToday.length;
+      const numCardsRepeated = this.props.cardsRepeatedToday.length;
+      const numCardsTotal = numCardsStudied + numCardsDue + numCardsRepeated;
 
-      if (
-        this.props.collection.cardsToStudyToday.length > 0 &&
-        this.props.collection.indexOfCurrentCard >= this.props.collection.cardsToStudyToday.length
-      ) {
-        return (
-          <div>
-            <ScreenTitle title="Study" subtitle={`Collections > ${this.props.collection.name}`} />
-            <div>Done!</div>
-          </div>
-        );
-      }
+      const percentageStudied = (numCardsStudied / numCardsTotal) * 100;
+      const percentageRepeated = (numCardsRepeated / numCardsTotal) * 100;
 
       return (
         <div>
@@ -73,11 +62,14 @@ class StudySession extends React.Component {
 
           <div
             className="progress"
-            data-label={`${this.props.collection.indexOfCurrentCard} of ${
-              this.props.collection.cardsToStudyToday.length
-            } complete`}
+            data-label={`Cards: 
+            ${numCardsStudied} studied. 
+            ${numCardsDue} due.
+            ${numCardsRepeated} to repeat.
+            `}
           >
-            <span className="studied" style={{ width: `${percentageComplete}%` }} />
+            <span className="studied" style={{ width: `${percentageStudied}%` }} />
+            <span className="repeated" style={{ width: `${percentageRepeated}%` }} />
           </div>
 
           <form onSubmit={this.handlesubmit}>
@@ -129,16 +121,19 @@ class StudySession extends React.Component {
 const mapStateToProps = state => {
   const collectionId = state.appState.activeCollection;
   const collection = state.collections.find(coll => coll.id === collectionId);
-  const currentCard = state.cards.find(
-    card => card.id === collection.cardsToStudyToday[collection.indexOfCurrentCard]
-  );
 
-  console.log('collection', collection);
-  console.log('currentCard', currentCard);
+  const cardsDueToday = filterCardsDueToday(state.cards, collectionId);
+  const cardsRepeatedToday = filterCardsRepeatedToday(state.cards, collectionId);
+  const cardsStudiedToday = filterCardsStudiedToday(state.cards, collectionId);
+
+  const { 0: currentCard } = cardsDueToday;
 
   return {
     collectionId,
     collection,
+    cardsDueToday,
+    cardsRepeatedToday,
+    cardsStudiedToday,
     currentCard
   };
 };
@@ -146,10 +141,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   updateCardsToActiveCollecton: collectionId =>
     dispatch(updateCardsToActiveCollecton(collectionId)),
-  startAnswerCard: (card, grade) => dispatch(startAnswerCard(card, grade)),
-  getCardsToStudy: collectionId => dispatch(getCardsToStudy(collectionId)),
-  incrementCardsStudied: collectionId => dispatch(incrementCardsStudied(collectionId)),
-  repeatCard: (cardId, collectionId) => dispatch(repeatCard(cardId, collectionId))
+  startAnswerCard: (card, grade) => dispatch(startAnswerCard(card, grade))
 });
 
 export default connect(

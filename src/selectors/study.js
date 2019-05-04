@@ -1,20 +1,49 @@
 import moment from 'moment';
 
-const endOfToday = moment().endOf('day');
-const rangeRandomInt = (startRange, endRange) =>
-  Math.floor(startRange + Math.random() * (endRange - startRange));
-
-const getIdsOfCardsToStudy = (cards, collectionId) =>
+const filterCardsDueToday = (cards, collectionId) =>
   cards
     .filter(
       card =>
-        (card.dateNextStudy === null || moment(card.dateNextStudy).isBefore(endOfToday)) &&
-        card.collectionId === collectionId
+        card.collectionId === collectionId &&
+        moment(card.dateNextStudy).isSameOrBefore(moment(), 'day')
     )
-    .map(card => card.id)
-    .sort(() => rangeRandomInt(-1, 2));
+    .sort((a, b) => {
+      if (typeof a.dateLastStudied === 'undefined') {
+        return -1;
+      }
+      if (typeof b.dateLastStudied === 'undefined') {
+        return 1;
+      }
+      return a.dateLastStudied - b.dateLastStudied;
+    });
 
-const getCardsFromCollectionId = (cards, collectionId) =>
-  cards.filter(card => card.collectionId === collectionId);
+const filterCardsNotDueToday = (cards, collectionId) =>
+  cards.filter(
+    card =>
+      card.collectionId !== collectionId ||
+      !moment(card.dateNextStudy).isSameOrBefore(moment(), 'day')
+  );
 
-export { getIdsOfCardsToStudy, getCardsFromCollectionId };
+const filterCardsRepeatedToday = (cards, collectionId) =>
+  cards.filter(
+    card =>
+      card.collectionId === collectionId &&
+      card.dateLastStudied !== undefined &&
+      moment(card.dateLastStudied).isSame(moment(), 'day') &&
+      moment(card.dateNextStudy).isSame(moment(), 'day')
+  );
+
+const filterCardsStudiedToday = (cards, collectionId) =>
+  cards.filter(
+    card =>
+      card.collectionId === collectionId &&
+      card.dateLastStudied !== undefined &&
+      moment(card.dateLastStudied).isSame(moment(), 'day')
+  );
+
+export {
+  filterCardsDueToday,
+  filterCardsNotDueToday,
+  filterCardsRepeatedToday,
+  filterCardsStudiedToday
+};

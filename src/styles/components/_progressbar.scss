@@ -3,6 +3,8 @@
   width: 50%;
   background-color: #c9c9c9;
   position: relative;
+  display: flex;
+  justify-content: space-between;
 }
 .progress:before {
   content: attr(data-label);
@@ -15,6 +17,12 @@
 }
 .progress .studied {
   background-color: #7cc4ff;
+  display: inline-block;
+  height: 100%;
+}
+
+.progress .repeated {
+  background-color: #ff7c7c;
   display: inline-block;
   height: 100%;
 }

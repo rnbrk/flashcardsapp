@@ -16,13 +16,9 @@ class AddCard extends React.Component {
     const card = {
       collectionId: this.props.collection.id,
       collectionName: this.props.collection.name,
-      dateAdded: moment()
-        .startOf('day')
-        .valueOf(),
+      dateAdded: moment().valueOf(),
       dateLastStudied: null,
-      dateModified: moment()
-        .startOf('day')
-        .valueOf(),
+      dateModified: moment().valueOf(),
       dateNextStudy: null,
       easinessFactor: 2.5,
       intervalInDays: 0,

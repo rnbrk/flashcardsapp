@@ -43,21 +43,6 @@ export const startSetCollections = () => {
   };
 };
 
-// export const startSetCollections = () => {
-//   return dispatch => {
-//     return database
-//       .ref(`users/${uid}/collections`)
-//       .once('value')
-//       .then(snapshot => {
-//         const collections = snapshot.val();
-//         Object.keys(collections).forEach(key => {
-//           collections[key].id = key;
-//         });
-//         dispatch(setCollections(collections));
-//       });
-//   };
-// };
-
 export const getCardsToStudy = collectionId => ({
   type: 'GET_CARDS_TO_STUDY',
   collectionId
@@ -73,10 +58,6 @@ export const incrementCardsStudied = collectionId => ({
   type: 'INCREMENT_CARDS_STUDIED',
   collectionId
 });
-
-// TODO: startIncrementCardsStudied
-
-// TODO: resetCardsStudied
 
 export const setDailyStudyLimit = (dailyStudyLimit, collectionId) => ({
   type: 'SET_DAILY_STUDY_LIMIT',
