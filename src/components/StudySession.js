@@ -47,15 +47,8 @@ class StudySession extends React.Component {
   };
 
   render() {
-    if (this.props.currentCard) {
-      const numCardsStudied = this.props.cardsStudiedToday.length;
-      const numCardsDue = this.props.cardsDueToday.length - this.props.cardsRepeatedToday.length;
-      const numCardsRepeated = this.props.cardsRepeatedToday.length;
-      const numCardsTotal = numCardsStudied + numCardsDue + numCardsRepeated;
-
-      const percentageStudied = (numCardsStudied / numCardsTotal) * 100;
-      const percentageRepeated = (numCardsRepeated / numCardsTotal) * 100;
-
+    // Study if card data and collection data is present
+    if (this.props.currentCard && this.props.collection) {
       return (
         <div>
           <ScreenTitle title="Study" subtitle={this.props.collection.name} />
@@ -63,13 +56,13 @@ class StudySession extends React.Component {
           <div
             className="progress"
             data-label={`Cards: 
-            ${numCardsStudied} studied. 
-            ${numCardsDue} due.
-            ${numCardsRepeated} to repeat.
+            ${this.props.numCardsStudied} studied. 
+            ${this.props.numCardsDue} due.
+            ${this.props.numCardsRepeated} to repeat.
             `}
           >
-            <span className="studied" style={{ width: `${percentageStudied}%` }} />
-            <span className="repeated" style={{ width: `${percentageRepeated}%` }} />
+            <span className="studied" style={{ width: `${this.props.percentageStudied}%` }} />
+            <span className="repeated" style={{ width: `${this.props.percentageRepeated}%` }} />
           </div>
 
           <form onSubmit={this.handlesubmit}>
@@ -113,18 +106,50 @@ class StudySession extends React.Component {
         </div>
       );
     }
+    // without card data user is either done or has not added cards
+    if (this.props.collection) {
+      return (
+        <div>
+          <ScreenTitle title="Study" subtitle={this.props.collection.name} />
 
-    return <div>Loading</div>;
+          {this.props.numCardsTotal > 0 ? (
+            <span>Done!</span>
+          ) : (
+            <span>Please add cards to study.</span>
+          )}
+        </div>
+      );
+    }
+
+    // if no data is present, still waiting for data
+    return (
+      <div>
+        <ScreenTitle
+          title="Study"
+          subtitle={this.props.collection ? this.props.collection.name : ''}
+        />
+        <div>Loading</div>
+      </div>
+    );
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, props) => {
   const collectionId = state.appState.activeCollection;
   const collection = state.collections.find(coll => coll.id === collectionId);
 
   const cardsDueToday = filterCardsDueToday(state.cards, collectionId);
   const cardsRepeatedToday = filterCardsRepeatedToday(state.cards, collectionId);
   const cardsStudiedToday = filterCardsStudiedToday(state.cards, collectionId);
+  const cardsTotal = [...state.cards];
+
+  const numCardsStudied = cardsStudiedToday ? cardsStudiedToday.length : 0;
+  const numCardsDue = cardsDueToday ? cardsDueToday.length - cardsRepeatedToday.length : 0;
+  const numCardsRepeated = cardsRepeatedToday ? cardsRepeatedToday.length : 0;
+  const numCardsTotal = numCardsStudied + numCardsDue + numCardsRepeated;
+
+  const percentageStudied = (numCardsStudied / numCardsTotal) * 100;
+  const percentageRepeated = (numCardsRepeated / numCardsTotal) * 100;
 
   const { 0: currentCard } = cardsDueToday;
 
@@ -134,7 +159,14 @@ const mapStateToProps = state => {
     cardsDueToday,
     cardsRepeatedToday,
     cardsStudiedToday,
-    currentCard
+    cardsTotal,
+    currentCard,
+    numCardsStudied,
+    numCardsDue,
+    numCardsRepeated,
+    numCardsTotal,
+    percentageStudied,
+    percentageRepeated
   };
 };
 

@@ -57,6 +57,28 @@ export const startRemoveCard = cardId => {
   };
 };
 
+export const removeAllCardsFromCollection = collectionId => ({
+  type: 'REMOVE_ALL_CARDS_FROM_COLLECTION',
+  collectionId
+});
+
+// TODO: startRemoveAllCardsFromCollection
+export const startRemoveAllCardsFromCollection = collectionId => {
+  return (dispatch, getState) => {
+    const cardsToRemove = getState().cards.filter(card => card.collectionId === collectionId);
+    const nodesToRemove = {};
+    cardsToRemove.forEach(card => {
+      nodesToRemove[card.id] = null;
+    });
+    return database
+      .ref(`users/${uid}/cards/`)
+      .update(nodesToRemove)
+      .then(() => {
+        dispatch(removeAllCardsFromCollection(collectionId));
+      });
+  };
+};
+
 export const setCards = cards => ({
   type: 'SET_CARDS',
   cards
@@ -93,7 +115,6 @@ export const startAnswerCard = (card, grade) => {
   const updates = updateStudyProgress(card, grade);
 
   return dispatch => {
-    console.log('gradedCard updates', updates);
     return database
       .ref(`users/${uid}/cards/${cardId}`)
       .update(updates)

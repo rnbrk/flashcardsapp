@@ -12,6 +12,13 @@ class NavDrawer extends React.Component {
     userClickedAddCollection: false
   };
 
+  handleKeyDown = event => {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      this.handleToggleAddCollection();
+    }
+  };
+
   handleSubmitAddCollection = event => {
     console.log('Clicked handleSubmitAddCollection');
     event.preventDefault();
@@ -67,6 +74,7 @@ class NavDrawer extends React.Component {
               <form
                 onSubmit={this.handleSubmitAddCollection}
                 onBlur={this.handleToggleAddCollection}
+                onKeyDown={this.handleKeyDown}
               >
                 <input
                   autoFocus

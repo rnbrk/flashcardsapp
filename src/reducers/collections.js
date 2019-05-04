@@ -8,6 +8,9 @@ const collectionsReducer = (state = [], action) => {
         }
       ]);
 
+    case 'REMOVE_COLLECTION':
+      return state.filter(collection => collection.id !== action.collectionId);
+
     case 'SET_COLLECTIONS':
       return [...action.collections];
 

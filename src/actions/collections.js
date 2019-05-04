@@ -1,4 +1,5 @@
 import database from '../firebase/firebase';
+import { startRemoveAllCardsFromCollection } from './cards';
 
 const uid = 'user1';
 
@@ -15,6 +16,23 @@ export const startAddCollection = collection => {
       .push(collection)
       .then(reference => {
         dispatch(addCollection(collection, reference.key));
+      });
+  };
+};
+
+export const removeCollection = collectionId => ({
+  type: 'REMOVE_COLLECTION',
+  collectionId
+});
+
+export const startRemoveCollection = collectionId => {
+  return dispatch => {
+    return database
+      .ref(`users/${uid}/collections/${collectionId}`)
+      .remove()
+      .then(() => {
+        dispatch(removeCollection(collectionId));
+        dispatch(startRemoveAllCardsFromCollection(collectionId));
       });
   };
 };

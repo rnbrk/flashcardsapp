@@ -16,6 +16,9 @@ const cardsReducer = (state = [], action) => {
     case 'REMOVE_CARD':
       return state.filter(card => card.id !== action.id);
 
+    case 'REMOVE_ALL_CARDS_FROM_COLLECTION':
+      return state.filter(card => card.collectionId !== action.collectionId);
+
     case 'ANSWER_CARD':
       return state.map(card =>
         card.id === action.id
