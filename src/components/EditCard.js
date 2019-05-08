@@ -3,25 +3,20 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom';
 
-import { startEditCard, startRemoveCard } from '../actions/cards';
 import CardForm from './CardForm';
-import LoadingPage from './LoadingPage';
+import { getCardFromId } from '../selectors/cards';
 import HeaderTitle from './HeaderTitle';
+import { startEditCard, startRemoveCard } from '../actions/cards';
 
 class EditCard extends React.Component {
-  state = {
-    userJustPressedSubmit: false,
-    card: undefined
-  };
+  state = { userPressedSubmit: false };
 
   onHandleSubmit = () => {
-    this.setState(() => ({
-      userJustPressedSubmit: true
-    }));
+    this.setState(() => ({ userPressedSubmit: true }));
   };
 
   onHandleRemoveCard = () => {
-    this.props.startRemoveCard(this.props.match.params.cardId);
+    this.props.startRemoveCard(this.props.card.id);
     this.onHandleSubmit();
   };
 
@@ -32,38 +27,40 @@ class EditCard extends React.Component {
       textFront
     };
 
-    this.props.startEditCard(this.props.match.params.cardId, card);
+    this.props.startEditCard(this.props.card.id, card);
     this.onHandleSubmit();
   };
 
   render() {
-    if (this.state.userJustPressedSubmit) {
+    const userPressedSubmit = this.state.userPressedSubmit;
+    const hasCard = this.props.card;
+
+    if (!hasCard) {
+      return <Redirect to={'/404'} />;
+    }
+
+    if (userPressedSubmit) {
       return <Redirect to={`/collection/${this.props.card.collectionId}`} />;
     }
 
     return (
       <div>
-        {this.props.card ? (
-          <div>
-            <HeaderTitle title="Edit Card" subtitle={this.props.card.collectionName} />
-            <CardForm
-              textFront={this.props.card.textFront}
-              textBack={this.props.card.textBack}
-              handleSubmit={this.updateCardInStore}
-            />
-          </div>
-        ) : (
-          <LoadingPage />
-        )}
+        <HeaderTitle title="Edit Card" subtitle={this.props.card.collectionName} />
+        <CardForm
+          textFront={this.props.card.textFront}
+          textBack={this.props.card.textBack}
+          handleSubmit={this.updateCardInStore}
+        />
         <button onClick={this.onHandleRemoveCard}>Remove card</button>
       </div>
     );
   }
 }
 
-const mapStateToProps = (state, props) => ({
-  card: state.cards.find(card => card.id === props.match.params.cardId)
-});
+const mapStateToProps = (state, props) => {
+  const card = getCardFromId(state.cards, props.match.params.cardId);
+  return { card };
+};
 
 const mapDispatchToProps = dispatch => ({
   startEditCard: (cardId, updates) => dispatch(startEditCard(cardId, updates)),

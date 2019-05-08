@@ -3,16 +3,17 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import ActionButton from './ActionButton';
-import LoadingPage from './LoadingPage';
-
+import ButtonRow from './ButtonRow';
+import ProgressBar from './ProgressBar';
+import StudyCard from './StudyCard';
 import {
-  filterCardsDueToday,
-  filterCardsRepeatedToday,
-  filterCardsStudiedToday
+  filterCardsCollectionId,
+  filterCardsDue,
+  getNumOfCardsRepeated,
+  getNumOfCardsStudied
 } from '../selectors/cards';
-
+import { getCollectionFromId } from '../selectors/collections';
 import { startAnswerCard } from '../actions/cards';
-
 import HeaderTitle from './HeaderTitle';
 
 class StudySession extends React.Component {
@@ -20,147 +21,103 @@ class StudySession extends React.Component {
     userHasReadFrontOfCard: false
   };
 
-  onHandleSubmit = () => {
-    this.setState(() => ({
-      userHasReadFrontOfCard: true
-    }));
+  onHandleToggle = () => {
+    this.setState(() => ({ userHasReadFrontOfCard: !this.state.userHasReadFrontOfCard }));
   };
 
-  onHandleAnswer = event => {
-    const grade = Number(event.target.getAttribute('grade'));
+  onHandleAnswer = grade => {
     this.props.startAnswerCard(this.props.currentCard, grade);
-
-    this.setState(() => ({
-      userHasReadFrontOfCard: false
-    }));
+    this.onHandleToggle();
   };
+
+  createProgressBarText = () => `Cards: 
+    ${this.props.numCardsStudied} studied. 
+    ${this.props.numCardsDue} due.
+    ${this.props.numCardsRepeated} to repeat.
+    `;
 
   render() {
-    if (!this.props.collectionId) {
+    const doneStudying = !this.props.currentCard && this.props.numCards > 0;
+    const hasActiveCollection = this.props.activeCollectionId;
+    const hasCardsInCollection = this.props.currentCard && this.props.numCards > 0;
+
+    if (!hasActiveCollection) {
       return <Redirect to={'/404'} />;
     }
 
-    // Study if card data and collection data is present
-    if (this.props.currentCard && this.props.collection) {
-      return (
-        <div>
-          <HeaderTitle title="Study" subtitle={this.props.collection.name} />
-
-          <div
-            className="progress"
-            data-label={`Cards: 
-            ${this.props.numCardsStudied} studied. 
-            ${this.props.numCardsDue} due.
-            ${this.props.numCardsRepeated} to repeat.
-            `}
-          >
-            <span className="studied" style={{ width: `${this.props.percentageStudied}%` }} />
-            <span className="repeated" style={{ width: `${this.props.percentageRepeated}%` }} />
-          </div>
-
-          <form onSubmit={this.handlesubmit}>
-            <label>
-              Front
-              <textarea value={this.props.currentCard.textFront} name="textFront" disabled />
-            </label>
-
-            {this.state.userHasReadFrontOfCard && (
-              <label>
-                Back
-                <textarea value={this.props.currentCard.textBack} name="textBack" disabled />
-              </label>
-            )}
-
-            {this.state.userHasReadFrontOfCard || (
-              <ActionButton handleActionButtonPress={this.onHandleSubmit} />
-            )}
-
-            {this.state.userHasReadFrontOfCard && (
-              <div>
-                <button type="button" grade="5" onClick={this.onHandleAnswer}>
-                  Easy
-                </button>
-                <button type="button" grade="4" onClick={this.onHandleAnswer}>
-                  Correct
-                </button>
-                <button type="button" grade="3" onClick={this.onHandleAnswer}>
-                  Hard
-                </button>
-
-                <button type="button" grade="2" onClick={this.onHandleAnswer}>
-                  False
-                </button>
-                <button type="button" grade="1" onClick={this.onHandleAnswer}>
-                  Again
-                </button>
-              </div>
-            )}
-          </form>
-        </div>
-      );
-    }
-    // without card data user is either done or has not added cards
-    if (this.props.collection) {
-      return (
-        <div>
-          <HeaderTitle title="Study" subtitle={this.props.collection.name} />
-
-          {this.props.numCardsTotal > 0 ? (
-            <span>Done!</span>
-          ) : (
-            <span>Please add cards to study.</span>
-          )}
-        </div>
-      );
+    if (doneStudying) {
+      return <span>Done!</span>;
     }
 
-    // if no data is present, still waiting for data
+    if (!hasCardsInCollection) {
+      return <span>Please add cards to study.</span>;
+    }
+
     return (
       <div>
-        <HeaderTitle
-          title="Study"
-          subtitle={this.props.collection ? this.props.collection.name : ''}
+        <HeaderTitle title="Study" subtitle={this.props.collection.name} />
+
+        <ProgressBar
+          displayText={this.createProgressBarText()}
+          numDone={this.props.numCardsStudied}
+          numTotal={this.props.numCards}
+          numFailed={this.props.numCardsRepeated}
         />
-        <LoadingPage />
+
+        <form onSubmit={this.handlesubmit}>
+          <StudyCard
+            textFront={this.props.currentCard.textFront}
+            textBack={this.props.currentCard.textBack}
+            isVisible={this.state.userHasReadFrontOfCard}
+          />
+
+          {this.state.userHasReadFrontOfCard || (
+            <ActionButton handleActionButtonPress={this.onHandleToggle} />
+          )}
+
+          {this.state.userHasReadFrontOfCard && (
+            <ButtonRow buttonObjects={this.props.buttonRow} onHandleClick={this.onHandleAnswer} />
+          )}
+        </form>
       </div>
     );
   }
 }
 
 const mapStateToProps = state => {
-  const collectionId = state.appState.activeCollection;
-  const collection = state.collections.find(coll => coll.id === collectionId);
-  const cards = state.cards;
+  const activeCollectionId = state.appState.activeCollection;
+  const collection = getCollectionFromId(state.collections, activeCollectionId);
+  const cards = filterCardsCollectionId(state.cards, activeCollectionId);
+  const cardsDue = filterCardsDue(cards);
 
-  const cardsDueToday = filterCardsDueToday(state.cards, collectionId);
-  const cardsRepeatedToday = filterCardsRepeatedToday(state.cards, collectionId);
-  const cardsStudiedToday = filterCardsStudiedToday(state.cards, collectionId);
+  const numCards = cards.length;
+  const numCardsDue = cardsDue.length;
+  const numCardsStudied = getNumOfCardsStudied(cards);
+  const numCardsRepeated = getNumOfCardsRepeated(cards);
 
-  const numCardsStudied = cardsStudiedToday ? cardsStudiedToday.length : 0;
-  const numCardsDue = cardsDueToday ? cardsDueToday.length - cardsRepeatedToday.length : 0;
-  const numCardsRepeated = cardsRepeatedToday ? cardsRepeatedToday.length : 0;
-  const numCardsTotal = numCardsStudied + numCardsDue + numCardsRepeated;
-
-  const percentageStudied = (numCardsStudied / numCardsTotal) * 100;
-  const percentageRepeated = (numCardsRepeated / numCardsTotal) * 100;
-
-  const { 0: currentCard } = cardsDueToday;
+  const { 0: currentCard } = cardsDue;
 
   return {
-    collectionId,
-    collection,
+    activeCollectionId,
     cards,
-    cardsDueToday,
-    cardsRepeatedToday,
-    cardsStudiedToday,
+    cardsDue,
+    collection,
     currentCard,
-    numCardsStudied,
+    numCards,
     numCardsDue,
-    numCardsRepeated,
-    numCardsTotal,
-    percentageStudied,
-    percentageRepeated
+    numCardsStudied,
+    numCardsRepeated
   };
+};
+
+StudySession.defaultProps = {
+  buttonRow: [
+    { buttonText: 'Easy', returnValue: 5 },
+    { buttonText: 'Correct', returnValue: 4 },
+    { buttonText: 'Hard', returnValue: 3 },
+    { buttonText: 'Incorrect', returnValue: 2 },
+    { buttonText: 'Again', returnValue: 1 }
+  ]
 };
 
 const mapDispatchToProps = dispatch => ({

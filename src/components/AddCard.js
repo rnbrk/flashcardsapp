@@ -3,18 +3,17 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom';
 
-import { startAddCard } from '../actions/cards';
 import CardForm from './CardForm';
+import { getCollectionFromId } from '../selectors/collections';
 import HeaderTitle from './HeaderTitle';
+import { startAddCard } from '../actions/cards';
 
 class AddCard extends React.Component {
-  state = {
-    userJustPressedSubmit: false
-  };
+  state = { userPressedSubmit: false };
 
   addCardToStore = (textFront, textBack) => {
     const card = {
-      collectionId: this.props.collection.id,
+      collectionId: this.props.activeCollectionId,
       collectionName: this.props.collection.name,
       dateAdded: moment().valueOf(),
       dateLastStudied: null,
@@ -28,35 +27,37 @@ class AddCard extends React.Component {
     };
 
     this.props.startAddCard(card);
-    this.setState(() => ({
-      userJustPressedSubmit: true
-    }));
+    this.setState(() => ({ userPressedSubmit: true }));
   };
 
   render() {
-    if (this.state.userJustPressedSubmit) {
+    const hasActiveCollection = this.props.activeCollectionId;
+    const userPressedSubmit = this.state.userPressedSubmit;
+
+    if (!hasActiveCollection) {
+      return <Redirect to={'/404'} />;
+    }
+
+    if (userPressedSubmit) {
       return <Redirect to={`/collection/${this.props.collection.id}`} />;
     }
 
     return (
       <div>
         <HeaderTitle title="Add Card" subtitle={this.props.collection.name} />
-        <CardForm
-          textBack=""
-          textFront=""
-          collectionId={this.props.collection.id}
-          collectionName={this.props.collection.name}
-          handleSubmit={this.addCardToStore}
-        />
+        <CardForm handleSubmit={this.addCardToStore} />
       </div>
     );
   }
 }
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = state => {
+  const activeCollectionId = state.appState.activeCollection;
+  const collection = getCollectionFromId(state.collections, activeCollectionId);
+
   return {
-    collectionId: props.match.params.collectionId,
-    collection: state.collections.find(coll => coll.id === props.match.params.collectionId)
+    activeCollectionId,
+    collection
   };
 };
 

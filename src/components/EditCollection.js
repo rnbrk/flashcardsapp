@@ -11,11 +11,11 @@ import { startRemoveCollection } from '../actions/collections';
 
 class EditCollection extends React.Component {
   state = {
-    userJustPressedSubmit: false
+    userPressedSubmit: false
   };
 
   onHandleRemoveCollection = () => {
-    this.props.startRemoveCollection(this.props.collectionId);
+    this.props.startRemoveCollection(this.props.activeCollectionId);
 
     this.setState(() => ({
       userJustPressedSubmit: true
@@ -23,15 +23,19 @@ class EditCollection extends React.Component {
   };
 
   handleAddCardButton = () => {
-    this.props.history.push(`/collection/add/${this.props.collectionId}`);
+    this.props.history.push(`/collection/add/${this.props.activeCollectionId}`);
   };
 
   render() {
-    if (this.state.userJustPressedSubmit) {
+    const hasActiveCollection = this.props.activeCollectionId;
+    const hasCardsInCollection = this.props.cards.length > 0;
+    const userPressedSubmit = this.state.userPressedSubmit;
+
+    if (userPressedSubmit) {
       return <Redirect to={'/dashboard'} />;
     }
 
-    if (!this.props.collectionId) {
+    if (!hasActiveCollection) {
       return <Redirect to={'/404'} />;
     }
 
@@ -42,7 +46,7 @@ class EditCollection extends React.Component {
           subtitle={this.props.collection ? this.props.collection.name : ''}
         />
 
-        {this.props.cards.length > 0 ? (
+        {hasCardsInCollection ? (
           <CardItemList cards={this.props.cards} />
         ) : (
           <div>No cards in this collection</div>
@@ -56,14 +60,14 @@ class EditCollection extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const collectionId = state.appState.activeCollection;
-  const collection = getCollectionFromId(state.collections, collectionId);
-  const cards = filterCardsCollectionId(state.cards, collectionId);
+  const activeCollectionId = state.appState.activeCollection;
+  const collection = getCollectionFromId(state.collections, activeCollectionId);
+  const cards = filterCardsCollectionId(state.cards, activeCollectionId);
 
   return {
     cards,
     collection,
-    collectionId
+    activeCollectionId
   };
 };
 

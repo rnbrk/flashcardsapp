@@ -23,16 +23,6 @@ const collectionsReducer = (state = [], action) => {
             }
           : collection
       );
-
-    case 'INCREMENT_CARDS_STUDIED':
-      return state.map(collection =>
-        collection.id === action.collectionId
-          ? {
-              ...collection,
-              indexOfCurrentCard: collection.indexOfCurrentCard + 1
-            }
-          : collection
-      );
     default:
       return state;
   }

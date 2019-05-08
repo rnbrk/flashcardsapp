@@ -1,38 +1,22 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import ActionButton from './ActionButton';
 
 class CardForm extends React.Component {
   state = {
-    collectionId: '',
-    collectionName: '',
-    textFront: '',
-    textBack: ''
+    textFront: this.props.textFront,
+    textBack: this.props.textBack
   };
-
-  componentDidMount() {
-    const { collectionId, collectionName, textFront, textBack } = this.props;
-
-    this.setState(() => ({
-      collectionId,
-      collectionName,
-      textFront,
-      textBack
-    }));
-  }
 
   handleChange = event => {
     const elementName = event.target.name;
     const elementValue = event.target.value;
 
     if (elementName === 'textFront') {
-      this.setState(() => ({
-        textFront: elementValue
-      }));
+      this.setState(() => ({ textFront: elementValue }));
     } else if (elementName === 'textBack') {
-      this.setState(() => ({
-        textBack: elementValue
-      }));
+      this.setState(() => ({ textBack: elementValue }));
     }
   };
 
@@ -61,5 +45,16 @@ class CardForm extends React.Component {
     );
   }
 }
+
+CardForm.propTypes = {
+  textFront: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  textBack: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  handleSubmit: PropTypes.func.isRequired
+};
+
+CardForm.defaultProps = {
+  textFront: '',
+  textBack: ''
+};
 
 export default CardForm;

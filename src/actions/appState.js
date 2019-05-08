@@ -17,9 +17,9 @@ export const startSetActiveCollection = collectionId => {
     } = getState();
 
     if (collectionId !== activeCollection) {
-      if (collectionIdExists(collectionId, collections)) {
+      if (collectionIdExists(collections, collectionId)) {
         dispatch(setActiveCollection(collectionId));
-      } else if (!collectionIdExists(collectionId, collections) && activeCollection !== null) {
+      } else if (!collectionIdExists(collections, collectionId) && activeCollection !== null) {
         dispatch(unsetActiveCollection());
       }
     }

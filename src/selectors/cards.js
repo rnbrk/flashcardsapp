@@ -1,15 +1,11 @@
 import moment from 'moment';
 
-const filterCardsCollectionId = (cards, collectionId) =>
+export const filterCardsCollectionId = (cards, collectionId) =>
   cards.filter(card => card.collectionId === collectionId);
 
-const filterCardsDueToday = (cards, collectionId) =>
+export const filterCardsDue = cards =>
   cards
-    .filter(
-      card =>
-        card.collectionId === collectionId &&
-        moment(card.dateNextStudy).isSameOrBefore(moment(), 'day')
-    )
+    .filter(card => moment(card.dateNextStudy).isSameOrBefore(moment(), 'day'))
     .sort((a, b) => {
       if (typeof a.dateLastStudied === 'undefined') {
         return -1;
@@ -20,34 +16,31 @@ const filterCardsDueToday = (cards, collectionId) =>
       return a.dateLastStudied - b.dateLastStudied;
     });
 
-const filterCardsNotDueToday = (cards, collectionId) =>
+export const filterCardsNotDueToday = (cards, collectionId) =>
   cards.filter(
     card =>
       card.collectionId !== collectionId ||
       !moment(card.dateNextStudy).isSameOrBefore(moment(), 'day')
   );
 
-const filterCardsRepeatedToday = (cards, collectionId) =>
-  cards.filter(
-    card =>
-      card.collectionId === collectionId &&
+export const getCardFromId = (cards, cardId) => cards.find(card => card.id === cardId);
+
+export const getNumOfCardsRepeated = cards =>
+  cards.reduce(
+    (acc, card) =>
       card.dateLastStudied !== undefined &&
       moment(card.dateLastStudied).isSame(moment(), 'day') &&
       moment(card.dateNextStudy).isSame(moment(), 'day')
+        ? acc + 1
+        : acc,
+    0
   );
 
-const filterCardsStudiedToday = (cards, collectionId) =>
-  cards.filter(
-    card =>
-      card.collectionId === collectionId &&
-      card.dateLastStudied !== undefined &&
-      moment(card.dateLastStudied).isSame(moment(), 'day')
+export const getNumOfCardsStudied = cards =>
+  cards.reduce(
+    (acc, card) =>
+      card.dateLastStudied !== undefined && moment(card.dateLastStudied).isSame(moment(), 'day')
+        ? acc + 1
+        : acc,
+    0
   );
-
-export {
-  filterCardsCollectionId,
-  filterCardsDueToday,
-  filterCardsNotDueToday,
-  filterCardsRepeatedToday,
-  filterCardsStudiedToday
-};
