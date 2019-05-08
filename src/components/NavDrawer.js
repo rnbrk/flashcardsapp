@@ -2,10 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import LoadingPage from './LoadingPage';
 import { startAddCollection } from '../actions/collections';
 
 class NavDrawer extends React.Component {
-  DEFAULT_INPUT_FIELD_VALUE = 'Name';
+  DEFAULT_INPUT_FIELD_VALUE = 'Collection name';
 
   state = {
     inputFieldValue: this.DEFAULT_INPUT_FIELD_VALUE,
@@ -20,7 +21,6 @@ class NavDrawer extends React.Component {
   };
 
   handleSubmitAddCollection = event => {
-    console.log('Clicked handleSubmitAddCollection');
     event.preventDefault();
 
     const collection = {
@@ -64,7 +64,7 @@ class NavDrawer extends React.Component {
                   {collection.name}
                 </Link>
                 <span> | </span>
-                <Link to={`/collection/${collection.id}/study`} key={`study-${collection.id}`}>
+                <Link to={`/collection/study/${collection.id}`} key={`study-${collection.id}`}>
                   study
                 </Link>
               </li>
@@ -93,7 +93,7 @@ class NavDrawer extends React.Component {
       );
     }
 
-    return <div>Loading</div>;
+    return <LoadingPage />;
   }
 }
 
@@ -105,7 +105,18 @@ const mapDispatchToProps = dispatch => ({
   startAddCollection: collection => dispatch(startAddCollection(collection))
 });
 
-export default connect(
+const ConnectedNavDrawer = connect(
   mapStateToProps,
   mapDispatchToProps
 )(NavDrawer);
+
+const withNavDrawer = Component => {
+  return props => (
+    <div>
+      <ConnectedNavDrawer />
+      <Component {...props} />
+    </div>
+  );
+};
+
+export default withNavDrawer;

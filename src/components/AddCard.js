@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 
 import { startAddCard } from '../actions/cards';
 import CardForm from './CardForm';
-import ScreenTitle from './ScreenTitle';
+import HeaderTitle from './HeaderTitle';
 
 class AddCard extends React.Component {
   state = {
@@ -40,7 +40,7 @@ class AddCard extends React.Component {
 
     return (
       <div>
-        <ScreenTitle title="Add Card" subtitle={this.props.collection.name} />
+        <HeaderTitle title="Add Card" subtitle={this.props.collection.name} />
         <CardForm
           textBack=""
           textFront=""

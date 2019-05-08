@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 export default class NotFoundPage extends React.Component {
   state = { redirect: false, WAIT_IN_MS: 4000 };

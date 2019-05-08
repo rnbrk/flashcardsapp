@@ -1,15 +1,17 @@
 import database from '../firebase/firebase';
 import updateStudyProgress from '../supermemo2/updateStudyProgress';
 
-const uid = 'user1';
-
 export const addCard = card => ({
   type: 'ADD_CARD',
   card
 });
 
 export const startAddCard = card => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const {
+      auth: { uid }
+    } = getState();
+
     return database
       .ref(`users/${uid}/cards`)
       .push(card)
@@ -31,7 +33,11 @@ export const editCard = (id, updates) => ({
 });
 
 export const startEditCard = (cardId, updates) => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const {
+      auth: { uid }
+    } = getState();
+
     return database
       .ref(`users/${uid}/cards/${cardId}`)
       .update(updates)
@@ -47,7 +53,11 @@ export const removeCard = id => ({
 });
 
 export const startRemoveCard = cardId => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const {
+      auth: { uid }
+    } = getState();
+
     return database
       .ref(`users/${uid}/cards/${cardId}`)
       .remove()
@@ -62,9 +72,12 @@ export const removeAllCardsFromCollection = collectionId => ({
   collectionId
 });
 
-// TODO: startRemoveAllCardsFromCollection
 export const startRemoveAllCardsFromCollection = collectionId => {
   return (dispatch, getState) => {
+    const {
+      auth: { uid }
+    } = getState();
+
     const cardsToRemove = getState().cards.filter(card => card.collectionId === collectionId);
     const nodesToRemove = {};
     cardsToRemove.forEach(card => {
@@ -84,12 +97,14 @@ export const setCards = cards => ({
   cards
 });
 
-export const startSetCards = collectionId => {
-  return dispatch => {
+export const startSetCards = () => {
+  return (dispatch, getState) => {
+    const {
+      auth: { uid }
+    } = getState();
+
     return database
       .ref(`users/${uid}/cards`)
-      .orderByChild('collectionId')
-      .equalTo(collectionId)
       .once('value')
       .then(snapshot => {
         const cards = [];
@@ -111,10 +126,18 @@ export const answerCard = (id, updates) => ({
 });
 
 export const startAnswerCard = (card, grade) => {
+  if (grade > 5 || grade < 1 || !Number.isInteger(Number(grade))) {
+    throw Error('Expected grade to be between 5 and 1.');
+  }
+
   const cardId = card.id;
   const updates = updateStudyProgress(card, grade);
 
-  return dispatch => {
+  return (dispatch, getState) => {
+    const {
+      auth: { uid }
+    } = getState();
+
     return database
       .ref(`users/${uid}/cards/${cardId}`)
       .update(updates)

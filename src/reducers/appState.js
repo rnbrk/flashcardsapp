@@ -5,6 +5,12 @@ const appStateReducer = (state = { activeCollection: null }, action) => {
         ...state,
         activeCollection: action.collectionId
       };
+
+    case 'UNSET_ACTIVE_COLLECTION':
+      return {
+        ...state,
+        activeCollection: null
+      };
     default:
       return state;
   }

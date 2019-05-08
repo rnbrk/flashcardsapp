@@ -1,11 +1,22 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { startLogout as startLogoutAction } from '../actions/auth';
 
-const UserStatus = () => (
+const UserStatus = ({ startLogout }) => (
   <div className="loginbar">
-    <div>Logged in as Username</div>
+    <div>Logged in.</div>
 
-    <button type="button">Logout</button>
+    <button type="button" onClick={startLogout}>
+      Logout
+    </button>
   </div>
 );
 
-export default UserStatus;
+const mapDispatchToProps = dispatch => ({
+  startLogout: () => dispatch(startLogoutAction())
+});
+
+export default connect(
+  undefined,
+  mapDispatchToProps
+)(UserStatus);

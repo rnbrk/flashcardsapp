@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { startLogin } from '../actions/auth';
+import { startLogin as startLoginAction } from '../actions/auth';
 
 export const LoginPage = ({ startLogin }) => (
   <div className="box-layout">
     <div className="box-layout__box">
       <h1 className="box-layout__title">Flashcard app</h1>
       <p>Tagline for app.</p>
-      <button className="button" onClick={startLogin}>
+      <button className="button" onClick={startLogin} type="button">
         Login with Google
       </button>
     </div>
@@ -15,7 +15,7 @@ export const LoginPage = ({ startLogin }) => (
 );
 
 const mapDispatchToProps = dispatch => ({
-  startLogin: () => dispatch(startLogin())
+  startLogin: () => dispatch(startLoginAction())
 });
 
 export default connect(

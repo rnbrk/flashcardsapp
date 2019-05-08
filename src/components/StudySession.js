@@ -1,35 +1,24 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
-import ActionButton from '../components/ActionButton';
+import ActionButton from './ActionButton';
+import LoadingPage from './LoadingPage';
 
 import {
   filterCardsDueToday,
   filterCardsRepeatedToday,
   filterCardsStudiedToday
-} from '../selectors/study';
+} from '../selectors/cards';
 
-import { updateCardsToActiveCollecton } from '../actions/appState';
 import { startAnswerCard } from '../actions/cards';
 
-import ScreenTitle from './ScreenTitle';
+import HeaderTitle from './HeaderTitle';
 
 class StudySession extends React.Component {
   state = {
     userHasReadFrontOfCard: false
   };
-
-  componentDidMount() {
-    if (this.props.match.params.collectionId) {
-      this.props.updateCardsToActiveCollecton(this.props.match.params.collectionId);
-    }
-  }
-
-  componentDidUpdate() {
-    if (this.props.collectionId !== this.props.match.params.collectionId) {
-      this.props.updateCardsToActiveCollecton(this.props.match.params.collectionId);
-    }
-  }
 
   onHandleSubmit = () => {
     this.setState(() => ({
@@ -47,11 +36,15 @@ class StudySession extends React.Component {
   };
 
   render() {
+    if (!this.props.collectionId) {
+      return <Redirect to={'/404'} />;
+    }
+
     // Study if card data and collection data is present
     if (this.props.currentCard && this.props.collection) {
       return (
         <div>
-          <ScreenTitle title="Study" subtitle={this.props.collection.name} />
+          <HeaderTitle title="Study" subtitle={this.props.collection.name} />
 
           <div
             className="progress"
@@ -110,7 +103,7 @@ class StudySession extends React.Component {
     if (this.props.collection) {
       return (
         <div>
-          <ScreenTitle title="Study" subtitle={this.props.collection.name} />
+          <HeaderTitle title="Study" subtitle={this.props.collection.name} />
 
           {this.props.numCardsTotal > 0 ? (
             <span>Done!</span>
@@ -124,24 +117,24 @@ class StudySession extends React.Component {
     // if no data is present, still waiting for data
     return (
       <div>
-        <ScreenTitle
+        <HeaderTitle
           title="Study"
           subtitle={this.props.collection ? this.props.collection.name : ''}
         />
-        <div>Loading</div>
+        <LoadingPage />
       </div>
     );
   }
 }
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = state => {
   const collectionId = state.appState.activeCollection;
   const collection = state.collections.find(coll => coll.id === collectionId);
+  const cards = state.cards;
 
   const cardsDueToday = filterCardsDueToday(state.cards, collectionId);
   const cardsRepeatedToday = filterCardsRepeatedToday(state.cards, collectionId);
   const cardsStudiedToday = filterCardsStudiedToday(state.cards, collectionId);
-  const cardsTotal = [...state.cards];
 
   const numCardsStudied = cardsStudiedToday ? cardsStudiedToday.length : 0;
   const numCardsDue = cardsDueToday ? cardsDueToday.length - cardsRepeatedToday.length : 0;
@@ -156,10 +149,10 @@ const mapStateToProps = (state, props) => {
   return {
     collectionId,
     collection,
+    cards,
     cardsDueToday,
     cardsRepeatedToday,
     cardsStudiedToday,
-    cardsTotal,
     currentCard,
     numCardsStudied,
     numCardsDue,
@@ -171,8 +164,6 @@ const mapStateToProps = (state, props) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  updateCardsToActiveCollecton: collectionId =>
-    dispatch(updateCardsToActiveCollecton(collectionId)),
   startAnswerCard: (card, grade) => dispatch(startAnswerCard(card, grade))
 });
 

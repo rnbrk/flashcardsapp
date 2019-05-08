@@ -1,4 +1,7 @@
-import * as firebase from 'firebase';
+import firebase from 'firebase/app';
+
+import 'firebase/auth';
+import 'firebase/database';
 
 const config = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -12,10 +15,10 @@ const config = {
 firebase.initializeApp(config);
 
 const database = firebase.database();
-// const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
+const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 
-// googleAuthProvider.setCustomParameters({
-//   prompt: 'select_account'
-// });
+googleAuthProvider.setCustomParameters({
+  prompt: 'select_account'
+});
 
-export { firebase, database as default };
+export { firebase, database as default, googleAuthProvider };

@@ -5,7 +5,8 @@ import { Redirect } from 'react-router-dom';
 
 import { startEditCard, startRemoveCard } from '../actions/cards';
 import CardForm from './CardForm';
-import ScreenTitle from './ScreenTitle';
+import LoadingPage from './LoadingPage';
+import HeaderTitle from './HeaderTitle';
 
 class EditCard extends React.Component {
   state = {
@@ -44,7 +45,7 @@ class EditCard extends React.Component {
       <div>
         {this.props.card ? (
           <div>
-            <ScreenTitle title="Edit Card" subtitle={this.props.card.collectionName} />
+            <HeaderTitle title="Edit Card" subtitle={this.props.card.collectionName} />
             <CardForm
               textFront={this.props.card.textFront}
               textBack={this.props.card.textBack}
@@ -52,7 +53,7 @@ class EditCard extends React.Component {
             />
           </div>
         ) : (
-          <p>Loading...</p>
+          <LoadingPage />
         )}
         <button onClick={this.onHandleRemoveCard}>Remove card</button>
       </div>

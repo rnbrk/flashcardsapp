@@ -1,8 +1,6 @@
 import database from '../firebase/firebase';
 import { startRemoveAllCardsFromCollection } from './cards';
 
-const uid = 'user1';
-
 export const addCollection = (collection, collectionId) => ({
   type: 'ADD_COLLECTION',
   collection,
@@ -10,7 +8,11 @@ export const addCollection = (collection, collectionId) => ({
 });
 
 export const startAddCollection = collection => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const {
+      auth: { uid }
+    } = getState();
+
     return database
       .ref(`users/${uid}/collections`)
       .push(collection)
@@ -26,7 +28,11 @@ export const removeCollection = collectionId => ({
 });
 
 export const startRemoveCollection = collectionId => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const {
+      auth: { uid }
+    } = getState();
+
     return database
       .ref(`users/${uid}/collections/${collectionId}`)
       .remove()
@@ -43,7 +49,11 @@ export const setCollections = collections => ({
 });
 
 export const startSetCollections = () => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const {
+      auth: { uid }
+    } = getState();
+
     return database
       .ref(`users/${uid}/collections`)
       .once('value')
@@ -60,11 +70,6 @@ export const startSetCollections = () => {
       });
   };
 };
-
-export const getCardsToStudy = collectionId => ({
-  type: 'GET_CARDS_TO_STUDY',
-  collectionId
-});
 
 export const repeatCard = (cardId, collectionId) => ({
   type: 'REPEAT_CARD',

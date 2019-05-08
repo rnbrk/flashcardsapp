@@ -1,5 +1,8 @@
 import moment from 'moment';
 
+const filterCardsCollectionId = (cards, collectionId) =>
+  cards.filter(card => card.collectionId === collectionId);
+
 const filterCardsDueToday = (cards, collectionId) =>
   cards
     .filter(
@@ -42,6 +45,7 @@ const filterCardsStudiedToday = (cards, collectionId) =>
   );
 
 export {
+  filterCardsCollectionId,
   filterCardsDueToday,
   filterCardsNotDueToday,
   filterCardsRepeatedToday,
