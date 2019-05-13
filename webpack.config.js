@@ -13,9 +13,17 @@ const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 // If neither then here it will be set to 'development'
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
+console.log('process.env.FIREBASE_DATABASE_URL', process.env.FIREBASE_DATABASE_URL);
+
+// if (process.env.NODE_ENV === 'test') {
+//   require('dotenv').config({ path: '.env.test' });
+// } else if (process.env.NODE_ENV === 'development') {
+//   require('dotenv').config({ path: '.env.development' });
+// }
+
 if (process.env.NODE_ENV === 'test') {
   require('dotenv').config({ path: '.env.test' });
-} else if (process.env.NODE_ENV === 'development') {
+} else {
   require('dotenv').config({ path: '.env.development' });
 }
 
