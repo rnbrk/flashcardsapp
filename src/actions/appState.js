@@ -25,3 +25,7 @@ export const startSetActiveCollection = collectionId => {
     }
   };
 };
+
+export const toggleDrawer = () => ({
+  type: 'TOGGLE_SHOW_DRAWER'
+});

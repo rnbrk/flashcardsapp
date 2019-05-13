@@ -1,0 +1,13 @@
+.hamburger-icon {
+  border-radius: 5px;
+  align-items: center;
+  display: flex;
+}
+
+.hamburger-icon:hover {
+  background-color: $primary-light;
+}
+
+.hamburger-icon > svg {
+  fill: black;
+}

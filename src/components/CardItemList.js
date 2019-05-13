@@ -4,7 +4,7 @@ import CardItem from './CardItem';
 
 const CardItemList = ({ cards }) => {
   return (
-    <div>
+    <div className="card-collection">
       {cards.map(card => (
         <CardItem
           key={card.id}

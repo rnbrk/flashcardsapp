@@ -9,9 +9,15 @@ export default class ButtonRow extends React.Component {
 
   render() {
     return (
-      <div>
-        {this.props.buttonObjects.map(({ buttonText, returnValue }) => (
-          <button type="button" key={buttonText} value={returnValue} onClick={this.onHandleClick}>
+      <div className="button-row">
+        {this.props.buttonObjects.map(({ buttonText, returnValue, arrayOfClasses }) => (
+          <button
+            type="button"
+            key={buttonText}
+            value={returnValue}
+            onClick={this.onHandleClick}
+            className={arrayOfClasses.join(' ')}
+          >
             {buttonText}
           </button>
         ))}
@@ -23,8 +29,9 @@ export default class ButtonRow extends React.Component {
 ButtonRow.propTypes = {
   buttonObjects: PropTypes.arrayOf(
     PropTypes.shape({
-      buttonText: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      returnValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+      buttonText: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      returnValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      arrayOfClasses: PropTypes.arrayOf(PropTypes.string)
     })
   ).isRequired,
   onHandleClick: PropTypes.func.isRequired

@@ -1,19 +1,24 @@
 .header {
-  background: $dark-blue;
-}
-
-.header__content {
-  align-items: center;
   display: flex;
   justify-content: space-between;
-  padding: $s-size 0;
+  align-items: center;
+  height: 5rem;
+  width: 100%;
+  padding-left: $m-size;
+  padding-right: $m-size;
+  position: fixed;
+  left: 0px;
+  background: white;
+  line-height: 30px;
+  z-index: 1;
 }
 
-.header__title {
-  color: white;
-  text-decoration: none;
+.logo {
+  color: grey;
+  display: flex;
+}
 
-  h1 {
-    margin: 0;
-  }
+.logo > * {
+  margin-top: $s-size;
+  margin-bottom: 5px;
 }

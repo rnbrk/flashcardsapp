@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 
 import CardForm from './CardForm';
 import { getCollectionFromId } from '../selectors/collections';
-import HeaderTitle from './HeaderTitle';
+import WrapperPageContent from './WrapperPageContent';
 import { startAddCard } from '../actions/cards';
 
 class AddCard extends React.Component {
@@ -43,10 +43,9 @@ class AddCard extends React.Component {
     }
 
     return (
-      <div>
-        <HeaderTitle title="Add Card" subtitle={this.props.collection.name} />
+      <WrapperPageContent>
         <CardForm handleSubmit={this.addCardToStore} />
-      </div>
+      </WrapperPageContent>
     );
   }
 }

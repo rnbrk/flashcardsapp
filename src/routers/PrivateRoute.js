@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
-import UserStatus from '../components/UserStatus';
 
 export const PrivateRoute = ({ isAuthenticated, component: Component, ...rest }) => (
   <Route
@@ -9,7 +8,7 @@ export const PrivateRoute = ({ isAuthenticated, component: Component, ...rest })
     component={props =>
       isAuthenticated ? (
         <div>
-          <UserStatus /> <Component {...props} />{' '}
+          <Component {...props} />{' '}
         </div>
       ) : (
         <Redirect to="/" />

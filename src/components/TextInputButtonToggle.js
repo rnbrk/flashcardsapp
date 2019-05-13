@@ -10,7 +10,7 @@ export default class TextInputButtonToggle extends React.Component {
   handleKeyDown = event => {
     if (event.key === 'Escape') {
       event.preventDefault();
-      this.handleToggleAddCollection();
+      this.handleToggle();
     }
   };
 
@@ -49,7 +49,7 @@ export default class TextInputButtonToggle extends React.Component {
             />
           </form>
         ) : (
-          <button type="button" onClick={this.handleToggle}>
+          <button type="button" className="button" onClick={this.handleToggle}>
             {this.props.buttonText}
           </button>
         )}

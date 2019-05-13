@@ -1,3 +1,58 @@
-.card-container:hover {
+.card {
+  background: white;
+  border-radius: 5px;
+  font-size: $font-size-medium;
+  padding: 0;
+  text-align: center;
+}
+
+.card__clickable:hover {
   background: lightgrey;
+}
+
+.card--content-text {
+  padding-left: $l-size;
+  padding-right: $l-size;
+  padding-top: $m-size;
+  padding-bottom: $m-size;
+}
+
+.card--content-textback {
+  border-top: 2px solid rgb(235, 235, 235);
+  padding-bottom: $m-size;
+  padding-top: $m-size;
+}
+
+.card--textarea {
+  border: 3px dashed lightgrey;
+  border-radius: 5px;
+  color: $primary-dark;
+  font-size: $font-size-medium;
+  display: block;
+  min-height: 100px;
+  height: 100%;
+  width: 100%;
+}
+
+.card--top {
+  background: $primary-light;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  padding-left: $l-size;
+  padding-right: $l-size;
+  padding-top: $s-size;
+  padding-bottom: $s-size;
+}
+
+.card-collection {
+  min-width: 295px;
+  max-width: 600px;
+}
+
+.card-collection > a {
+  display: block;
+  margin-bottom: $m-size;
+}
+
+@media all and (max-width: 350px) {
 }

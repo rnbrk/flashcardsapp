@@ -7,11 +7,14 @@ import { Link } from 'react-router-dom';
 const CardItem = ({ id, dateAdded, textFront, textBack }) => {
   return (
     <Link to={`/card/${id}`}>
-      <div className="card-container" id={id} role="button" tabIndex="0">
-        {dateAdded && <div>Added: {moment(dateAdded).format('DD MMM YYYY hh:mm')}</div>}
-        <div>
-          <div>{textFront}</div>
-          <div>{textBack}</div>
+      <div className="card card__clickable" id={id} role="button" tabIndex="0">
+        <div className="card--top">
+          {dateAdded && <div>Added: {moment(dateAdded).format('DD MMM YYYY hh:mm')}</div>}
+        </div>
+
+        <div className="card--content">
+          <div className="card--content-text card--content-textfront">{textFront}</div>
+          <div className="card--content-text card--content-textback">{textBack}</div>
         </div>
       </div>
     </Link>

@@ -1,17 +1,42 @@
 // Colors
-$blue: #1c88bf;
-$dark-grey: #333;
-$dark-blue: #364051;
-$grey: #666;
-$off-white: #f7f7f7;
+$primary: #00e676;
+$primary-light: #66ffa6;
+$primary-dark: #00b248;
+
+$secondary: #ffd740;
+$secondary-light: #ffff74;
+$secondary-dark: #c8a600;
+
+.primary {
+  color: $primary;
+}
+
+.primary-dark {
+  color: $primary-dark;
+}
+
+.secondary {
+  color: $secondary;
+}
+
+.secondary-dark {
+  color: $secondary-dark;
+}
 
 // Font-size
-$font-size-large: 1.8rem;
-$font-size-small: 1.4rem;
+$font-size-large: 2rem;
+$font-size-medium: 1.4rem;
+$font-size-small: 1.2rem;
 
 // Spacing
+$xs-size: 0.8rem;
 $s-size: 1.2rem;
 $m-size: 1.6rem;
 $l-size: 3.2rem;
 $xl-size: 4.8rem;
 $desktop-breakpoint: 45rem;
+
+// Icon size
+$icon-size-l: 32px;
+$icon-size-m: 24px;
+$icon-size-s: 16px;

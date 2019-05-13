@@ -1,5 +1,6 @@
 import React from 'react';
+import WrapperPageContent from './WrapperPageContent';
 
-const Dashboard = () => <div>Flashcard app</div>;
+const Dashboard = () => <WrapperPageContent>Flashcard app</WrapperPageContent>;
 
 export default Dashboard;

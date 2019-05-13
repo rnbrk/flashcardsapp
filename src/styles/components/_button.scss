@@ -1,11 +1,11 @@
 .button {
-  background: $blue;
+  background: $primary;
   border: none;
-  border-radius: 2px;
-  color: white;
+  border-radius: 5px;
+  color: black;
   display: inline-block;
-  font-size: $font-size-large;
-  font-weight: 300;
+  font-size: $font-size-small;
+  font-weight: 600;
   line-height: 1;
   padding: $s-size;
   text-decoration: none;
@@ -13,8 +13,25 @@
 
 .button--link {
   background: none;
+  color: darken($primary-dark, 20);
 }
 
 .button--secondary {
-  background: lighten($grey, 15);
+  background: $secondary;
+}
+
+.button--white {
+  background: white;
+  color: $primary-dark;
+}
+
+.button-row {
+  display: flex;
+  justify-content: center;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.button-row > button {
+  margin: 0 5px;
 }

@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 
 import CardForm from './CardForm';
 import { getCardFromId } from '../selectors/cards';
-import HeaderTitle from './HeaderTitle';
+import WrapperPageContent from './WrapperPageContent';
 import { startEditCard, startRemoveCard } from '../actions/cards';
 
 class EditCard extends React.Component {
@@ -44,15 +44,16 @@ class EditCard extends React.Component {
     }
 
     return (
-      <div>
-        <HeaderTitle title="Edit Card" subtitle={this.props.card.collectionName} />
+      <WrapperPageContent>
         <CardForm
           textFront={this.props.card.textFront}
           textBack={this.props.card.textBack}
           handleSubmit={this.updateCardInStore}
         />
-        <button onClick={this.onHandleRemoveCard}>Remove card</button>
-      </div>
+        <button className="button button--white" onClick={this.onHandleRemoveCard}>
+          Remove card
+        </button>
+      </WrapperPageContent>
     );
   }
 }

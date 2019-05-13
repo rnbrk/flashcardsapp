@@ -29,19 +29,36 @@ class CardForm extends React.Component {
     const { textFront, textBack } = this.state;
 
     return (
-      <form onSubmit={this.handlesubmit}>
-        <label>
-          Front
-          <textarea value={textFront} onChange={this.handleChange} name="textFront" />
-        </label>
-
-        <label>
-          Back
-          <textarea value={textBack} onChange={this.handleChange} name="textBack" />
-        </label>
-
-        <ActionButton handleActionButtonPress={this.handleSubmit} />
-      </form>
+      <div className="card-collection">
+        <div className="card">
+          <div className="card--top">Card</div>
+          <div className="card--content">
+            <form onSubmit={this.handlesubmit}>
+              <div className="card--content-text card--content-textfront">
+                <label>
+                  <textarea
+                    className="card--textarea"
+                    value={textFront}
+                    onChange={this.handleChange}
+                    name="textFront"
+                  />
+                </label>
+              </div>
+              <div className="card--content-text card--content-textback">
+                <label>
+                  <textarea
+                    className="card--textarea"
+                    value={textBack}
+                    onChange={this.handleChange}
+                    name="textBack"
+                  />
+                </label>
+              </div>
+              <ActionButton handleActionButtonPress={this.handleSubmit} />
+            </form>
+          </div>
+        </div>
+      </div>
     );
   }
 }

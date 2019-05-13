@@ -1,0 +1,31 @@
+.page-content {
+  margin-left: 0px;
+  font-size: $font-size-medium;
+  height: calc(100vh);
+
+  padding-left: $m-size;
+  padding-right: $m-size;
+  padding-top: 7rem;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  z-index: -2;
+}
+
+.page-content::-webkit-scrollbar {
+  /* WebKit */
+  width: 0;
+  height: 0;
+}
+
+@media all and (max-width: 350px) {
+  .page-content.checked {
+    margin-left: 100%;
+  }
+  .page-content {
+    margin: 0;
+    width: 100%;
+  }
+}

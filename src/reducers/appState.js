@@ -1,4 +1,4 @@
-const appStateReducer = (state = { activeCollection: null }, action) => {
+const appStateReducer = (state = { activeCollection: null, showDrawer: true }, action) => {
   switch (action.type) {
     case 'SET_ACTIVE_COLLECTION':
       return {
@@ -10,6 +10,12 @@ const appStateReducer = (state = { activeCollection: null }, action) => {
       return {
         ...state,
         activeCollection: null
+      };
+
+    case 'TOGGLE_SHOW_DRAWER':
+      return {
+        ...state,
+        showDrawer: !state.showDrawer
       };
     default:
       return state;

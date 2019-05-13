@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const StudyCard = ({ textFront, textBack, isVisible }) => (
+const StudyCard = ({ textFront, textBack, isVisible, handleClick }) => (
   <div>
-    <textarea value={textFront} name="textFront" disabled />
-
-    {isVisible && <textarea value={textBack} name="textBack" disabled />}
+    <div onClick={handleClick} className="card--content-text card--content-textfront">
+      {textFront}
+    </div>
+    {isVisible && <div className="card--content-text card--content-textback">{textBack}</div>}
   </div>
 );
 

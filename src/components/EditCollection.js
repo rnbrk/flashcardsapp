@@ -6,7 +6,7 @@ import ActionButton from './ActionButton';
 import CardItemList from './CardItemList';
 import { filterCardsCollectionId } from '../selectors/cards';
 import { getCollectionFromId } from '../selectors/collections';
-import HeaderTitle from './HeaderTitle';
+import WrapperPageContent from './WrapperPageContent';
 import { startRemoveCollection } from '../actions/collections';
 
 class EditCollection extends React.Component {
@@ -40,12 +40,7 @@ class EditCollection extends React.Component {
     }
 
     return (
-      <div>
-        <HeaderTitle
-          title={'Edit collection'}
-          subtitle={this.props.collection ? this.props.collection.name : ''}
-        />
-
+      <WrapperPageContent>
         {hasCardsInCollection ? (
           <CardItemList cards={this.props.cards} />
         ) : (
@@ -53,8 +48,13 @@ class EditCollection extends React.Component {
         )}
 
         <ActionButton handleActionButtonPress={this.handleAddCardButton} />
-        <button onClick={this.onHandleRemoveCollection}>Remove collection</button>
-      </div>
+        <button className="button button--secondary" onClick={this.handleAddCardButton}>
+          Add card
+        </button>
+        <button className="button button--white" onClick={this.onHandleRemoveCollection}>
+          Remove collection
+        </button>
+      </WrapperPageContent>
     );
   }
 }

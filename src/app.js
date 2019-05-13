@@ -18,7 +18,9 @@ import './styles/styles.scss';
 
 const store = configureStore();
 
-const jsx = (
+const appElement = document.querySelector('#app');
+
+const app = (
   <Provider store={store}>
     <AppRouter />
   </Provider>
@@ -27,12 +29,12 @@ const jsx = (
 let hasRendered = false;
 const renderApp = () => {
   if (!hasRendered) {
-    ReactDOM.render(jsx, document.querySelector('#app'));
+    ReactDOM.render(app, appElement);
     hasRendered = true;
   }
 };
 
-ReactDOM.render(<LoadingPage />, document.querySelector('#app'));
+ReactDOM.render(<LoadingPage />, appElement);
 
 firebase.auth().onAuthStateChanged(user => {
   if (user) {

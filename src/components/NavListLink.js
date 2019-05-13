@@ -2,16 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-const NavListLink = ({ firstText, firstLink, secondText, secondLink }) => (
-  <li>
-    <Link to={firstLink}>{firstText}</Link>
-
+const NavListLink = ({ firstText, firstLink, secondText, secondLink, materialIconName }) => (
+  <div className="drawer__item">
+    <Link className="drawer__item-left-side" to={firstLink}>
+      {materialIconName && <i className="material-icons md-24">{materialIconName}</i>}
+      <div>{firstText}</div>
+    </Link>
     {secondText && secondLink && (
-      <div>
-        <Link to={secondLink}>{secondText}</Link>
-      </div>
+      <Link className="drawer__item-right-side" to={secondLink}>
+        <h2 className="drawer__section-title">{secondText}</h2>
+      </Link>
     )}
-  </li>
+  </div>
 );
 
 NavListLink.propTypes = {

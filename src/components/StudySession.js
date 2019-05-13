@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 
 import ActionButton from './ActionButton';
 import ButtonRow from './ButtonRow';
+import WrapperPageContent from './WrapperPageContent';
 import ProgressBar from './ProgressBar';
 import StudyCard from './StudyCard';
 import {
@@ -14,7 +15,6 @@ import {
 } from '../selectors/cards';
 import { getCollectionFromId } from '../selectors/collections';
 import { startAnswerCard } from '../actions/cards';
-import HeaderTitle from './HeaderTitle';
 
 class StudySession extends React.Component {
   state = {
@@ -54,32 +54,43 @@ class StudySession extends React.Component {
     }
 
     return (
-      <div>
-        <HeaderTitle title="Study" subtitle={this.props.collection.name} />
+      <WrapperPageContent>
+        <div className="card-collection">
+          <div className="card">
+            <ProgressBar
+              displayText={this.createProgressBarText()}
+              numDone={this.props.numCardsStudied}
+              numTotal={this.props.numCards}
+              numFailed={this.props.numCardsRepeated}
+            />
 
-        <ProgressBar
-          displayText={this.createProgressBarText()}
-          numDone={this.props.numCardsStudied}
-          numTotal={this.props.numCards}
-          numFailed={this.props.numCardsRepeated}
-        />
+            <div className="card--content-text">
+              <form onSubmit={this.handlesubmit}>
+                <StudyCard
+                  textFront={this.props.currentCard.textFront}
+                  textBack={this.props.currentCard.textBack}
+                  isVisible={this.state.userHasReadFrontOfCard}
+                  handleClick={this.onHandleToggle}
+                />
 
-        <form onSubmit={this.handlesubmit}>
-          <StudyCard
-            textFront={this.props.currentCard.textFront}
-            textBack={this.props.currentCard.textBack}
-            isVisible={this.state.userHasReadFrontOfCard}
-          />
+                {this.state.userHasReadFrontOfCard || (
+                  <ActionButton
+                    handleActionButtonPress={this.onHandleToggle}
+                    materialIconName="question_answer"
+                  />
+                )}
 
-          {this.state.userHasReadFrontOfCard || (
-            <ActionButton handleActionButtonPress={this.onHandleToggle} />
-          )}
-
-          {this.state.userHasReadFrontOfCard && (
-            <ButtonRow buttonObjects={this.props.buttonRow} onHandleClick={this.onHandleAnswer} />
-          )}
-        </form>
-      </div>
+                {this.state.userHasReadFrontOfCard && (
+                  <ButtonRow
+                    buttonObjects={this.props.buttonRow}
+                    onHandleClick={this.onHandleAnswer}
+                  />
+                )}
+              </form>
+            </div>
+          </div>
+        </div>
+      </WrapperPageContent>
     );
   }
 }
@@ -112,11 +123,11 @@ const mapStateToProps = state => {
 
 StudySession.defaultProps = {
   buttonRow: [
-    { buttonText: 'Easy', returnValue: 5 },
-    { buttonText: 'Correct', returnValue: 4 },
-    { buttonText: 'Hard', returnValue: 3 },
-    { buttonText: 'Incorrect', returnValue: 2 },
-    { buttonText: 'Again', returnValue: 1 }
+    { buttonText: 'Easy', returnValue: 5, arrayOfClasses: ['button'] },
+    { buttonText: 'Correct', returnValue: 4, arrayOfClasses: ['button'] },
+    { buttonText: 'Hard', returnValue: 3, arrayOfClasses: ['button'] },
+    { buttonText: 'Incorrect', returnValue: 2, arrayOfClasses: ['button', 'button--secondary'] },
+    { buttonText: 'Again', returnValue: 1, arrayOfClasses: ['button', 'button--secondary'] }
   ]
 };
 
