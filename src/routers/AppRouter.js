@@ -4,15 +4,15 @@ import React from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 
-import AddCard from '../components/AddCard';
-import ConnectedLoginPage from '../components/LoginPage';
+import AddCard from '../pages/AddCard';
+import ConnectedLoginPage from '../pages/LoginPage';
 import ConnectedPrivateRoute from './PrivateRoute';
 import ConnectedPublicRoute from './PublicRoute';
-import Dashboard from '../components/Dashboard';
-import EditCard from '../components/EditCard';
-import EditCollection from '../components/EditCollection';
+import Dashboard from '../pages/Dashboard';
+import EditCard from '../pages/EditCard';
+import EditCollection from '../pages/EditCollection';
 import NotFoundPage from '../components/NotFoundPage';
-import StudySession from '../components/StudySession';
+import StudySession from '../pages/StudySession';
 import ConnectedCollectionsDrawer from '../components/CollectionsDrawer';
 import Header from '../components/Header';
 

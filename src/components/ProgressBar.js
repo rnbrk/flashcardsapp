@@ -7,8 +7,8 @@ const ProgressBar = ({ displayText, numDone, numTotal, numFailed }) => {
 
   return (
     <div className="progress-bar" data-label={displayText}>
-      <span className="done" style={{ width: `${percentageDone}%` }} />
-      <span className="failed" style={{ width: `${percentageFailed}%` }} />
+      <span className="progress-bar__done" style={{ width: `${percentageDone}%` }} />
+      <span className="progress-bar__failed" style={{ width: `${percentageFailed}%` }} />
     </div>
   );
 };

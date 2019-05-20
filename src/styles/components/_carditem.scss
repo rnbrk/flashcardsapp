@@ -1,58 +1,62 @@
 .card {
-  background: white;
-  border-radius: 5px;
+  background-color: $white;
+  border-radius: $border-radius-s;
   font-size: $font-size-medium;
+  overflow: hidden;
   padding: 0;
   text-align: center;
-}
 
-.card__clickable:hover {
-  background: lightgrey;
-}
+  &__content-text {
+    padding-left: $l-size;
+    padding-right: $l-size;
+    padding-top: $m-size;
+    padding-bottom: $m-size;
+  }
 
-.card--content-text {
-  padding-left: $l-size;
-  padding-right: $l-size;
-  padding-top: $m-size;
-  padding-bottom: $m-size;
-}
+  &__content-textback {
+    border-top: $border-thickness-s solid $lightgrey;
+    padding-bottom: $m-size;
+    padding-top: $m-size;
+  }
 
-.card--content-textback {
-  border-top: 2px solid rgb(235, 235, 235);
-  padding-bottom: $m-size;
-  padding-top: $m-size;
-}
+  &__textarea {
+    border: $border-thickness-s dashed $lightgrey;
+    border-radius: $border-radius-s;
+    color: $primary-dark;
+    font-size: $font-size-medium;
+    display: block;
+    min-height: 10rem;
+    height: 100%;
+    width: 100%;
+  }
 
-.card--textarea {
-  border: 3px dashed lightgrey;
-  border-radius: 5px;
-  color: $primary-dark;
-  font-size: $font-size-medium;
-  display: block;
-  min-height: 100px;
-  height: 100%;
-  width: 100%;
-}
+  &__top {
+    background: $primary-light;
+    border-top-left-radius: $border-radius-s;
+    border-top-right-radius: $border-radius-s;
+    overflow: hidden;
+    padding-left: $l-size;
+    padding-right: $l-size;
+    padding-top: $s-size;
+    padding-bottom: $s-size;
+  }
 
-.card--top {
-  background: $primary-light;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  padding-left: $l-size;
-  padding-right: $l-size;
-  padding-top: $s-size;
-  padding-bottom: $s-size;
+  &--clickable {
+    &:hover {
+      background-color: $lightgrey;
+      cursor: pointer;
+    }
+  }
+
+  &--standard-size {
+    min-width: 29.5rem;
+    max-width: 65rem;
+  }
 }
 
 .card-collection {
-  min-width: 295px;
-  max-width: 600px;
-}
-
-.card-collection > a {
-  display: block;
-  margin-bottom: $m-size;
-}
-
-@media all and (max-width: 350px) {
+  & > * {
+    // margin: 0 auto;
+    margin-bottom: $m-size;
+  }
 }

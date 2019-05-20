@@ -1,0 +1,9 @@
+.logo {
+  color: $mediumgrey;
+  display: flex;
+}
+
+.logo > * {
+  margin-top: $s-size;
+  margin-bottom: 0.5rem;
+}

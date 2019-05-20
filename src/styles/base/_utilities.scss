@@ -1,0 +1,25 @@
+.primary {
+  color: $primary;
+}
+
+.primary-dark {
+  color: $primary-dark;
+}
+
+.secondary {
+  color: $secondary;
+}
+
+.secondary-dark {
+  color: $secondary-dark;
+}
+
+.margin-bottom-small {
+  margin-bottom: 2rem;
+}
+
+.gutter-children-very-small {
+  :not(:last-child) {
+    margin-right: 1rem;
+  }
+}

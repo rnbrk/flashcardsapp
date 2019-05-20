@@ -2,6 +2,7 @@
   background-color: $secondary;
   border: none;
   border-radius: 50%;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -11,10 +12,10 @@
   bottom: $s-size;
   right: $s-size;
   width: 7rem;
-}
 
-.actionbutton:active {
-  background-color: $secondary-dark;
+  &:active {
+    background-color: $secondary-dark;
+  }
 }
 
 @media all and (max-width: 400px) {

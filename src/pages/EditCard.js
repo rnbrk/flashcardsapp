@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom';
 
-import CardForm from './CardForm';
+import CardForm from '../components/CardForm';
 import { getCardFromId } from '../selectors/cards';
-import WrapperPageContent from './WrapperPageContent';
+import WrapperPageContent from '../layout/WrapperPageContent';
 import { startEditCard, startRemoveCard } from '../actions/cards';
 
 class EditCard extends React.Component {
@@ -50,6 +50,7 @@ class EditCard extends React.Component {
           textBack={this.props.card.textBack}
           handleSubmit={this.updateCardInStore}
         />
+
         <button className="button button--white" onClick={this.onHandleRemoveCard}>
           Remove card
         </button>

@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom';
 
-import CardForm from './CardForm';
+import CardForm from '../components/CardForm';
 import { getCollectionFromId } from '../selectors/collections';
-import WrapperPageContent from './WrapperPageContent';
+import WrapperPageContent from '../layout/WrapperPageContent';
 import { startAddCard } from '../actions/cards';
 
 class AddCard extends React.Component {

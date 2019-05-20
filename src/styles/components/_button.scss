@@ -1,37 +1,45 @@
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
+}
+
 .button {
   background: $primary;
   border: none;
-  border-radius: 5px;
-  color: black;
+  border-radius: $border-radius-s;
+  color: $black;
   display: inline-block;
   font-size: $font-size-small;
   font-weight: 600;
   line-height: 1;
   padding: $s-size;
   text-decoration: none;
-}
 
-.button--link {
-  background: none;
-  color: darken($primary-dark, 20);
-}
+  &--link {
+    background: none;
+    color: darken($primary-dark, 20);
+  }
 
-.button--secondary {
-  background: $secondary;
-}
+  &--secondary {
+    background: $secondary;
+  }
 
-.button--white {
-  background: white;
-  color: $primary-dark;
+  &--white {
+    background-color: $white;
+    color: $primary-dark;
+  }
 }
 
 .button-row {
   display: flex;
   justify-content: center;
-  padding-left: 5px;
-  padding-right: 5px;
-}
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 
-.button-row > button {
-  margin: 0 5px;
+  * > button {
+    margin: 0 0.5rem;
+  }
 }

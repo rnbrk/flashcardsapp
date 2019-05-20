@@ -7,21 +7,10 @@ $secondary: #ffd740;
 $secondary-light: #ffff74;
 $secondary-dark: #c8a600;
 
-.primary {
-  color: $primary;
-}
-
-.primary-dark {
-  color: $primary-dark;
-}
-
-.secondary {
-  color: $secondary;
-}
-
-.secondary-dark {
-  color: $secondary-dark;
-}
+$black: #000;
+$white: #fff;
+$lightgrey: rgb(235, 235, 235);
+$mediumgrey: grey;
 
 // Font-size
 $font-size-large: 2rem;
@@ -40,3 +29,9 @@ $desktop-breakpoint: 45rem;
 $icon-size-l: 32px;
 $icon-size-m: 24px;
 $icon-size-s: 16px;
+
+// Border radius
+$border-radius-s: 5px;
+
+// Border thickness
+$border-thickness-s: 2px;

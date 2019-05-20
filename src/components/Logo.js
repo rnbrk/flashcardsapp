@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Logo = () => (
-  <div className="logo">
+  <div className="heading-primary logo">
     <h1 className="primary-dark">flash</h1>
     <h1 className="secondary-dark">card</h1>
     <h1>app</h1>

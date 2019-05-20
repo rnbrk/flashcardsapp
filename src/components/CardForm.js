@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import ActionButton from './ActionButton';
 
 class CardForm extends React.Component {
@@ -29,34 +28,32 @@ class CardForm extends React.Component {
     const { textFront, textBack } = this.state;
 
     return (
-      <div className="card-collection">
-        <div className="card">
-          <div className="card--top">Card</div>
-          <div className="card--content">
-            <form onSubmit={this.handlesubmit}>
-              <div className="card--content-text card--content-textfront">
-                <label>
-                  <textarea
-                    className="card--textarea"
-                    value={textFront}
-                    onChange={this.handleChange}
-                    name="textFront"
-                  />
-                </label>
-              </div>
-              <div className="card--content-text card--content-textback">
-                <label>
-                  <textarea
-                    className="card--textarea"
-                    value={textBack}
-                    onChange={this.handleChange}
-                    name="textBack"
-                  />
-                </label>
-              </div>
-              <ActionButton handleActionButtonPress={this.handleSubmit} />
-            </form>
-          </div>
+      <div className="card card--standard-size margin-bottom-small ">
+        <div className="card__top">Card</div>
+        <div className="card__content">
+          <form onSubmit={this.handlesubmit}>
+            <div className="card__content-text card__content-textfront">
+              <label>
+                <textarea
+                  className="card__textarea"
+                  value={textFront}
+                  onChange={this.handleChange}
+                  name="textFront"
+                />
+              </label>
+            </div>
+            <div className="card__content-text card__content-textback">
+              <label>
+                <textarea
+                  className="card__textarea"
+                  value={textBack}
+                  onChange={this.handleChange}
+                  name="textBack"
+                />
+              </label>
+            </div>
+            <ActionButton handleActionButtonPress={this.handleSubmit} />
+          </form>
         </div>
       </div>
     );

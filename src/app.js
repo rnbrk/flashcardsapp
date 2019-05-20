@@ -11,7 +11,7 @@ import { startSetActiveCollection } from './actions/appState';
 import { startSetCards } from './actions/cards';
 import { startSetCollections } from './actions/collections';
 
-import LoadingPage from './components/LoadingPage';
+import Loading from './components/Loading';
 
 import 'normalize.css/normalize.css';
 import './styles/styles.scss';
@@ -34,7 +34,7 @@ const renderApp = () => {
   }
 };
 
-ReactDOM.render(<LoadingPage />, appElement);
+ReactDOM.render(<Loading />, appElement);
 
 firebase.auth().onAuthStateChanged(user => {
   if (user) {

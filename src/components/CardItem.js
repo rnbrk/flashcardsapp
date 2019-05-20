@@ -2,22 +2,28 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import moment from 'moment';
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
-const CardItem = ({ id, dateAdded, textFront, textBack }) => {
+const CardItem = ({ id, dateAdded, textFront, textBack, history }) => {
   return (
-    <Link to={`/card/${id}`}>
-      <div className="card card__clickable" id={id} role="button" tabIndex="0">
-        <div className="card--top">
-          {dateAdded && <div>Added: {moment(dateAdded).format('DD MMM YYYY hh:mm')}</div>}
-        </div>
-
-        <div className="card--content">
-          <div className="card--content-text card--content-textfront">{textFront}</div>
-          <div className="card--content-text card--content-textback">{textBack}</div>
-        </div>
+    <article
+      className="card card--standard-size card--clickable"
+      id={id}
+      role="button"
+      tabIndex="0"
+      onClick={() => {
+        history.push(`/card/${id}`);
+      }}
+    >
+      <div className="card__top">
+        {dateAdded && <div>Added: {moment(dateAdded).format('DD MMM YYYY hh:mm')}</div>}
       </div>
-    </Link>
+
+      <div className="card__content">
+        <div className="card__content-text card__content-textfront">{textFront}</div>
+        <div className="card__content-text card__content-textback">{textBack}</div>
+      </div>
+    </article>
   );
 };
 
@@ -34,4 +40,4 @@ CardItem.defaultProps = {
   textBack: ''
 };
 
-export default CardItem;
+export default withRouter(CardItem);

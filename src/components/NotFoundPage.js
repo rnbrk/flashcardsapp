@@ -16,7 +16,7 @@ export default class NotFoundPage extends React.Component {
         {this.state.redirect ? (
           <Redirect to="/" />
         ) : (
-          <div>Page is not found. Will redirect to the dashboard</div>
+          <div>Page is not found. You will be redirected to the dashboard</div>
         )}
       </div>
     );

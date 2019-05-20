@@ -1,5 +1,5 @@
 import database from '../firebase/firebase';
-import updateStudyProgress from '../supermemo2/updateStudyProgress';
+import updateStudyProgress from '../reducers/updateStudyProgress';
 
 export const addCard = card => ({
   type: 'ADD_CARD',

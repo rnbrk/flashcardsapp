@@ -1,13 +1,20 @@
-@import './base/settings';
+@import './base/variables';
+
 @import './base/base';
+@import './base/material';
+@import './base/utilities';
+@import './base/typography';
 
 @import './components/actionbutton';
 @import './components/button';
 @import './components/carditem';
 @import './components/drawer';
 @import './components/hamburger-icon';
-@import './components/header';
-@import './components/login-page';
-@import './components/material';
-@import './components/page-content';
+@import './components/loading';
+@import './components/logo';
 @import './components/progressbar';
+
+@import './layout/header';
+@import './layout/page-content';
+
+@import './pages/login-page';

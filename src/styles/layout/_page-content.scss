@@ -1,8 +1,7 @@
 .page-content {
-  margin-left: 0px;
+  margin-left: 0;
   font-size: $font-size-medium;
   height: calc(100vh);
-
   padding-left: $m-size;
   padding-right: $m-size;
   padding-top: 7rem;
@@ -12,20 +11,25 @@
   scrollbar-width: none;
   -ms-overflow-style: none;
   z-index: -2;
-}
 
-.page-content::-webkit-scrollbar {
-  /* WebKit */
-  width: 0;
-  height: 0;
+  &--checked {
+    margin-left: 300px;
+  }
+
+  &::-webkit-scrollbar {
+    /* WebKit */
+    width: 0;
+    height: 0;
+  }
 }
 
 @media all and (max-width: 350px) {
-  .page-content.checked {
-    margin-left: 100%;
-  }
   .page-content {
     margin: 0;
     width: 100%;
+
+    &--checked {
+      margin-left: 100%;
+    }
   }
 }

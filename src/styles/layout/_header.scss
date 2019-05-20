@@ -1,4 +1,5 @@
 .header {
+  border-radius: 0 0 $border-radius-s 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -8,17 +9,7 @@
   padding-right: $m-size;
   position: fixed;
   left: 0px;
-  background: white;
-  line-height: 30px;
+  background: $white;
+  line-height: 3rem;
   z-index: 1;
-}
-
-.logo {
-  color: grey;
-  display: flex;
-}
-
-.logo > * {
-  margin-top: $s-size;
-  margin-bottom: 5px;
 }

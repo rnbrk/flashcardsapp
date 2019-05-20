@@ -9,7 +9,7 @@ export default class ButtonRow extends React.Component {
 
   render() {
     return (
-      <div className="button-row">
+      <div className={`gutter-children-very-small ${this.props.arrayOfContainerClasses.join(' ')}`}>
         {this.props.buttonObjects.map(({ buttonText, returnValue, arrayOfClasses }) => (
           <button
             type="button"
@@ -27,6 +27,7 @@ export default class ButtonRow extends React.Component {
 }
 
 ButtonRow.propTypes = {
+  arrayOfContainerClasses: PropTypes.arrayOf(PropTypes.string),
   buttonObjects: PropTypes.arrayOf(
     PropTypes.shape({
       buttonText: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
