@@ -6,7 +6,7 @@ import WrapperPageContent from '../layout/WrapperPageContent';
 
 const Dashboard = props => (
   <WrapperPageContent>
-    <article className="card">
+    <article className="card card--standard-size">
       <div className="card__top">Dashboard</div>
 
       <div className="card__content-text">
